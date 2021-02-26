@@ -1,4 +1,4 @@
 package com.seventhtill.magic;
 
-public abstract class Spell implements Magical {
+public interface Spell extends Magical {
 }
