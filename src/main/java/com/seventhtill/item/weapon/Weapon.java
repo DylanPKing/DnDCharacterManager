@@ -1,6 +1,17 @@
 package com.seventhtill.item.weapon;
 
-import com.seventhtill.item.Item;
+import java.util.List;
 
-public interface Weapon extends Item {
+public abstract class Weapon {
+    protected WeaponAttackType attackType;
+    private int weight;
+    private String name;
+    private final List<String> propetries;
+
+    public Weapon(WeaponAttackType attackType, int damageDice, int weight, String name, List<String> properties) {
+        this.attackType = attackType;
+        this.weight = weight;
+        this.name = name;
+        this.propetries = properties;
+    }
 }
