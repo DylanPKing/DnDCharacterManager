@@ -1,8 +1,10 @@
 package com.seventhtill.item.weapon;
 
+import com.seventhtill.item.Item;
+
 import java.util.List;
 
-public abstract class Weapon {
+public abstract class Weapon  implements Item {
     protected WeaponAttackType attackType;
     private int weight;
     private String name;
