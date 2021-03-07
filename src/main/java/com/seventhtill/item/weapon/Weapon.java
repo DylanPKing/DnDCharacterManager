@@ -8,7 +8,7 @@ public abstract class Weapon {
     private String name;
     private final List<String> propetries;
 
-    public Weapon(WeaponAttackType attackType, int damageDice, int weight, String name, List<String> properties) {
+    public Weapon(WeaponAttackType attackType, int weight, String name, List<String> properties) {
         this.attackType = attackType;
         this.weight = weight;
         this.name = name;

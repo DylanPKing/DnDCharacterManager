@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SimpleWeapon extends Weapon {
 
-    public SimpleWeapon(WeaponAttackType attackType, int damageDice, int weight, String name, List<String> properties) {
-        super(attackType, damageDice, weight, name, properties);
+    public SimpleWeapon(WeaponAttackType attackType, int weight, String name, List<String> properties) {
+        super(attackType, weight, name, properties);
     }
 }
