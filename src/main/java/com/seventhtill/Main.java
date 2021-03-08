@@ -1,15 +1,14 @@
 package com.seventhtill;
 
-import com.seventhtill.race.dwarf.Dwarf;
-import com.seventhtill.race.dwarf.HillDwarf;
-import com.seventhtill.race.dwarf.MountainDwarf;
-import com.seventhtill.race.elf.Elf;
-import com.seventhtill.race.elf.HighElf;
+import com.seventhtill.race.AbstractFactory;
+import com.seventhtill.race.FactoryProducer;
+import com.seventhtill.race.Race;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-        Elf test = new HighElf(); //testing creation
-        System.out.println(test.getAbilities());
+        AbstractFactory raceFactory = FactoryProducer.getFactory("elf");
+        Race character = raceFactory.getRace("woodelf");
+        System.out.println(character.getAbilities());
     }
 }
