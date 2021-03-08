@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 // Concrete class Hill Dwarf that extends Dwarf
 public class HillDwarf extends Dwarf{
-    // Temporarily storing the Dwarven Toughness (HP +1) in a list. Needs to be handled later once character is setup. Possibly use command.
+    // Temporarily storing the Dwarven Toughness (HP +1) in a list. Needs to be
+    // handled later once character is setup. Possibly use command.
     private ArrayList<String> uniqueTraits;
 
     // Constructor
@@ -22,6 +23,6 @@ public class HillDwarf extends Dwarf{
 
     // Adding 2 wisdom to the ability scores
     private void addAbilityScoreIncrease() {
-        super.abilityScoreIncrease.put("Wisdom", 1);
+        this.abilityScoreIncrease.put("Wisdom", 1);
     }
 }
