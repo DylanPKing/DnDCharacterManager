@@ -3,12 +3,96 @@ package com.seventhtill.magic;
 import java.util.List;
 
 public class Spell {
-    public Spell(String magicSchool, int SpellLevel, String castingTime, int rangeDistInFeet, String spellShape,
-                 String duration, boolean vocal, boolean somatic, boolean concentration, List<String> components,
-                 String description, List<CastingClass> casterClasses){
+    String magicSchool;
+    int spellLevel;
+    String castingTime;
+    int rangeDistInFeet;
+    String spellShape;
+    String duration;
+    boolean vocal;
+    boolean somatic;
+    boolean concentration;
+    List<String> components;
+    String description;
+    List<String> casterClasses;
 
+    public Spell(String magicSchool, int spellLevel, String castingTime, int rangeDistInFeet, String spellShape,
+                 String duration, boolean vocal, boolean somatic, boolean concentration, List<String> components,
+                 String description, List<String> casterClasses) {
+
+        this.magicSchool = magicSchool;
+        this.spellLevel = spellLevel;
+        this.castingTime = castingTime;
+        this.rangeDistInFeet = rangeDistInFeet;
+        this.spellShape = spellShape;
+        this.duration = duration;
+        this.vocal = vocal;
+        this.somatic = somatic;
+        this.concentration = concentration;
+        this.components = components;
+        this.description = description;
+        this.casterClasses = casterClasses;
     }
-//    magicSchool will be the school of magic of the spell e.g.conjouration
+
+    public String getMagicSchool() {
+        return magicSchool;
+    }
+
+    public int getSpellLevel() {
+        return spellLevel;
+    }
+
+    public String getCastingTime() {
+        return castingTime;
+    }
+
+    public int getRangeDistInFeet() {
+        return rangeDistInFeet;
+    }
+
+    public String getSpellShape() {
+        return spellShape;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public boolean isVocal() {
+        return vocal;
+    }
+
+    public boolean isSomatic() {
+        return somatic;
+    }
+
+    public boolean isConcentration() {
+        return concentration;
+    }
+
+    public List<String> getComponents() {
+        return components;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+//    public boolean canCast(Character character) {
+//        String charClass = character.getClass().getClassName();
+//        boolean castable = false;
+//
+//        for(int i = 0; i < casterClasses.size(); i++) {
+//            if(casterClasses.get(i).equalsIgnoreCase(charClass)) {
+//                castable = true;
+//            }
+//        }
+//
+//        return castable;
+//    }
+
+
+    //    magicSchool will be the school of magic of the spell e.g.conjuration
 //    spellLevel is the spell level, 0-2 for this project
 //    castingTime is the time taken to cast the spell, String because unit of time is action or bonus action etc.
 //    rangeDistInFeet is the distance the spell has effect in or the max distance a target can be from the spellcaster
