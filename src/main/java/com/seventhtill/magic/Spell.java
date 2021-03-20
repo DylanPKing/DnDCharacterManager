@@ -3,18 +3,18 @@ package com.seventhtill.magic;
 import java.util.List;
 
 public class Spell {
-    String magicSchool;
-    int spellLevel;
-    String castingTime;
-    int rangeDistInFeet;
-    String spellShape;
-    String duration;
-    boolean vocal;
-    boolean somatic;
-    boolean concentration;
-    List<String> components;
-    String description;
-    List<String> casterClasses;
+    private String magicSchool;
+    private int spellLevel;
+    private String castingTime;
+    private int rangeDistInFeet;
+    private String spellShape;
+    private String duration;
+    private boolean vocal;
+    private boolean somatic;
+    private boolean concentration;
+    private List<String> components;
+    private String description;
+    private List<String> casterClasses;
 
     public Spell(String magicSchool, int spellLevel, String castingTime, int rangeDistInFeet, String spellShape,
                  String duration, boolean vocal, boolean somatic, boolean concentration, List<String> components,
@@ -80,15 +80,7 @@ public class Spell {
 
 //    public boolean canCast(Character character) {
 //        String charClass = character.getClass().getClassName();
-//        boolean castable = false;
-//
-//        for(int i = 0; i < casterClasses.size(); i++) {
-//            if(casterClasses.get(i).equalsIgnoreCase(charClass)) {
-//                castable = true;
-//            }
-//        }
-//
-//        return castable;
+//        return casterClasses.contains(charClass);
 //    }
 
 
