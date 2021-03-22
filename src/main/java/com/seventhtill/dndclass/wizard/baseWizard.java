@@ -37,6 +37,7 @@ public abstract class baseWizard implements DnDClass, Magical {
 
     @Override
     public void initHitDice(){
+        this.hitDie = new HitDice();
         //1d6
         this.hitDie.setHitDie(6);
     }
@@ -78,5 +79,37 @@ public abstract class baseWizard implements DnDClass, Magical {
 
     public void addSpell(String spell){
         this.spells.add(spell);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getHitDie() {
+        return hitDie.getHitDie();
+    }
+
+    public ArrayList<Armor> getWizardRobes() {
+        return wizardRobes;
+    }
+
+    public ArrayList<SimpleWeapon> getWeapons() {
+        return weapons;
+    }
+
+    public ArrayList<String> getTools() {
+        return tools;
+    }
+
+    public ArrayList<String> getSavingThrows() {
+        return savingThrows;
+    }
+
+    public ArrayList<String> getSkills() {
+        return skills;
+    }
+
+    public ArrayList<String> getSpells() {
+        return spells;
     }
 }

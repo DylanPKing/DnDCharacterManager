@@ -16,6 +16,7 @@ public abstract class baseRogue implements DnDClass {
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
     private ArrayList<String> skills;
+    private ArrayList<String> abilities;
 
     baseRogue() {
         initHealth();
@@ -35,6 +36,7 @@ public abstract class baseRogue implements DnDClass {
 
     @Override
     public void initHitDice() {
+        this.hitDie = new HitDice();
         //1d8
         this.hitDie.setHitDie(8);
     }
@@ -75,9 +77,41 @@ public abstract class baseRogue implements DnDClass {
 
     public void initAbilities() {
         //Adding level one abilities
-        this.skills = new ArrayList<>();
-        this.skills.add("Expertise");
-        this.skills.add("Sneak Attack");
-        this.skills.add("Thieves' Cant");
+        this.abilities = new ArrayList<>();
+        this.abilities.add("Expertise");
+        this.abilities.add("Sneak Attack");
+        this.abilities.add("Thieves' Cant");
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getHitDie() {
+        return hitDie.getHitDie();
+    }
+
+    public ArrayList<Armor> getLightArmor() {
+        return lightArmor;
+    }
+
+    public ArrayList<SimpleWeapon> getWeapons() {
+        return weapons;
+    }
+
+    public ArrayList<String> getTools() {
+        return tools;
+    }
+
+    public ArrayList<String> getSavingThrows() {
+        return savingThrows;
+    }
+
+    public ArrayList<String> getSkills() {
+        return skills;
+    }
+
+    public ArrayList<String> getAbilities() {
+        return abilities;
     }
 }

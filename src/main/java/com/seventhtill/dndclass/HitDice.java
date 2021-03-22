@@ -20,4 +20,9 @@ public class HitDice {
         hitDie = hitDie + bonus;
         return  hitDie;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

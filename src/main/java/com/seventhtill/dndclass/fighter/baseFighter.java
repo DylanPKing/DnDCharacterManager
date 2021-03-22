@@ -18,6 +18,7 @@ public abstract class baseFighter implements DnDClass {
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
     private ArrayList<String> skills;
+    private ArrayList<String> abilities;
 
     baseFighter() {
         initHealth();
@@ -37,6 +38,7 @@ public abstract class baseFighter implements DnDClass {
 
     @Override
     public void initHitDice() {
+        this.hitDie = new HitDice();
         //1d10
         this.hitDie.setHitDie(10);
     }
@@ -78,8 +80,49 @@ public abstract class baseFighter implements DnDClass {
 
     public void initAbilities() {
         //Adding level one abilities
-        this.skills = new ArrayList<>();
-        this.skills.add("Fighting Style");
-        this.skills.add("Second Wind");
+        this.abilities = new ArrayList<>();
+        this.abilities.add("Fighting Style");
+        this.abilities.add("Second Wind");
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getHitDie() {
+        return hitDie.getHitDie();
+    }
+
+    public ArrayList<Armor> getLightArmor() {
+        return lightArmor;
+    }
+
+    public ArrayList<Armor> getMediumArmor() {
+        return mediumArmor;
+    }
+
+    public ArrayList<Armor> getHeavyArmor() {
+        return heavyArmor;
+    }
+
+    public ArrayList<SimpleWeapon> getWeapons() {
+        return weapons;
+    }
+
+    public ArrayList<String> getTools() {
+        return tools;
+    }
+
+    public ArrayList<String> getSavingThrows() {
+        return savingThrows;
+    }
+
+    public ArrayList<String> getSkills() {
+        return skills;
+    }
+
+    public ArrayList<String> getAbilities() {
+        return abilities;
+    }
+
 }
