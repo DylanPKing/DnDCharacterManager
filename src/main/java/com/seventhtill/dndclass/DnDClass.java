@@ -1,24 +1,15 @@
 package com.seventhtill.dndclass;
 
-public abstract class DnDClass {
-    private HitDice hitDie;
-    private Proficient proficiencies;
+import com.seventhtill.item.Armor;
 
-    private int health;
+import java.util.ArrayList;
 
-    public DnDClass() {
-        hitDie = new HitDice();
-        //this.health = hitDie.initHealth();
-
-    }
-
-
-    public void setHitDie(HitDice hitDie) {
-        this.hitDie = hitDie;
-    }
-
-    public HitDice getHitDie() {
-        return hitDie;
-    }
-
+public interface DnDClass {
+    void initHealth();
+    void initHitDice();
+    void initArmor();
+    void initWeapon();
+    void initTools();
+    void initSavingThrows();
+    void initSkills();
 }
