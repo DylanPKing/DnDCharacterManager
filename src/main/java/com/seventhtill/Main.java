@@ -11,5 +11,9 @@ public class Main {
         System.out.println(character.getHealth());
         System.out.println(character.getHitDie());
         System.out.println(character.getSavingThrows());
+
+        AbstractFactory raceFactory = FactoryProducer.getFactory("elf");
+        Race character = raceFactory.getRace("woodelf");
+        System.out.println(character.getAbilities());
     }
 }
