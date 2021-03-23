@@ -150,20 +150,43 @@ public class Cli {
                 "4) Human.\n" +
                 "5) Cancel\n");
         String userInput = this.scanner.nextLine();
+        characterRace = characterRaceSelction(userInput);
 
+        return characterRace;
+    }
+
+    // Method to handle the base race input
+    private Race characterRaceSelction(String userInput) {
+        Race characterRace = null;
         // Handling the input
         switch(userInput) {
             case "1":
-                characterRace = getDwarfRace();
+                characterRace = GetGenericRace("dwarf",
+                        "hilldwarf",
+                        "mountaindwarf",
+                        "Hill Dwarf",
+                        "Mountain Dwarf");
                 return  characterRace;
             case "2":
-                characterRace = getElfRace();
+                characterRace = GetGenericRace("elf",
+                        "highelf",
+                        "woodelf",
+                        "High Elf",
+                        "Wood Elf");
                 return characterRace;
             case "3":
-                characterRace = getHalflingRace();
+                characterRace = GetGenericRace("halfling",
+                        "lightfoothalfling",
+                        "stouthalfling",
+                        "Light Foot Halfling",
+                        "Stout Halfling");
                 return  characterRace;
             case "4":
-                characterRace = getHumanRace();
+                characterRace = GetGenericRace("human",
+                        "standardhuman",
+                        "null",
+                        "Standard Human",
+                        "null");
                 return characterRace;
             case "5":
                 System.out.println("Cancelling and returning to the main menu");
@@ -174,120 +197,6 @@ public class Cli {
                         "How about you follow the instructions for a change?");
                 createCharacterRace();
                 break;
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterRace;
-    }
-
-    // Used to get the dwarf
-    private Race getDwarfRace() {
-        // Using the abstract factory
-        Race characterRace = null;
-        AbstractFactory raceFactory = FactoryProducer.getFactory(
-                "dwarf");
-        System.out.println("Okay, what type of dwarf would you like to be?:\n" +
-                "1) Hill Dwarf.\n" +
-                "2) Mountain Dwarf\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterRace = raceFactory.getRace("hilldwarf");
-                return characterRace;
-            case "2":
-                characterRace = raceFactory.getRace("mountaindwarf");
-                return characterRace;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterRace();
-            default:
-                error("This is not a valid input, try again...");
-                getDwarfRace();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterRace;
-    }
-
-    // Used to get the elf
-    private Race getElfRace() {
-        // Using the abstract factory
-        Race characterRace = null;
-        AbstractFactory raceFactory = FactoryProducer.getFactory(
-                "elf");
-        System.out.println("Okay, what type of elf would you like to be?:\n" +
-                "1) High Elf.\n" +
-                "2) Wood Elf\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterRace = raceFactory.getRace("highelf");
-                return characterRace;
-            case "2":
-                characterRace = raceFactory.getRace("woodelf");
-                return characterRace;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterRace();
-            default:
-                error("This is not a valid input, try again...");
-                getElfRace();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterRace;
-    }
-
-    // Used to get the halfing
-    private Race getHalflingRace() {
-        // Using the abstract factory
-        Race characterRace = null;
-        AbstractFactory raceFactory = FactoryProducer.getFactory(
-                "halfling");
-        System.out.println("Okay, what type of halfling would you " +
-                "like to be?:\n" +
-                "1) Light Foot Halfling.\n" +
-                "2) Stout Halfling\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterRace = raceFactory.getRace(
-                        "lightfoothalfling");
-                return characterRace;
-            case "2":
-                characterRace = raceFactory.getRace("stouthalfling");
-                return characterRace;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterRace();
-            default:
-                error("This is not a valid input, try again...");
-                getHalflingRace();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterRace;
-    }
-
-    // Used to get the human
-    private Race getHumanRace() {
-        // Using the abstract factory
-        Race characterRace = null;
-        AbstractFactory raceFactory = FactoryProducer.getFactory(
-                "human");
-        System.out.println("Do you want to be a standard human?:\n" +
-                "1) Standard Human.\n" +
-                "2) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterRace = raceFactory.getRace("standardhuman");
-                return characterRace;
-            case "2":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterRace();
-            default:
-                error("This is not a valid input, try again...");
-                getHumanRace();
         }
         // Null is okay here since this line will never actually kick in.
         return characterRace;
@@ -453,6 +362,78 @@ public class Cli {
         }
         // Null is okay here since this line will never actually kick in.
         return characterClass;
+    }
+
+    // This method will be a modular getRace method to stop duplication
+    private Race GetGenericRace(String baseRace,
+                                String subRace1,
+                                String subRace2,
+                                String subRace1Text,
+                                String subRace2Text) {
+        Race characterRace = null;
+        String cancel = "Cancelling and returning to previous menu";
+        String errorMessage = "This is not a valid input, try again...";
+
+        // Setting the prompt text
+        String text = "";
+        if(subRace2.equals("null")) {
+            text = "Okay, what type of " + baseRace + " would you like to be?:\n" +
+                    "1) " + subRace1Text + ".\n" +
+                    "2) Cancel.\n"
+        }
+        else {
+            text = "Okay, what type of " + baseRace + " would you like to be?:\n" +
+                    "1) " + subRace1Text + ".\n" +
+                    "2) " + subRace2Text + ".\n" +
+                    "3) Cancel.\n";
+        }
+
+        // Making an abstract factory to handle the creation process
+        AbstractFactory raceFactory = FactoryProducer.getFactory(baseRace);
+        System.out.println(text);
+        String userInput = scanner.nextLine();
+        characterRace = GenericRaceValidator(raceFactory,
+                userInput,
+                subRace1,
+                subRace2,
+                cancel,
+                errorMessage);
+
+        return characterRace;
+    }
+
+    // This method will be able to remove duplicated code
+    private Race GenericRaceValidator(AbstractFactory raceFactory,
+                                      String userInput,
+                                      String subRace1,
+                                      String subRace2,
+                                      String cancel,
+                                      String errorMessage) {
+        Race characterRace = null;
+        switch (userInput) {
+            case "1":
+                characterRace = raceFactory.getRace(subRace1);
+                return characterRace;
+            case "2":
+                if(subRace2.equals("null")) {
+                    System.out.println(cancel);
+                    createCharacterRace();
+                }
+                characterRace = raceFactory.getRace(subRace2);
+                return characterRace;
+            case "3":
+                if(subRace2.equals("null")) {
+                    error(errorMessage);
+                    createCharacterRace();
+                }
+                System.out.println(cancel);
+                createCharacterRace();
+            default:
+                error(errorMessage);
+                createCharacterRace();
+        }
+        //Can be null since code never reaches this line
+        return characterRace;
     }
 
     // Temp method while implementing functionality
