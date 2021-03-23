@@ -150,13 +150,13 @@ public class Cli {
                 "4) Human.\n" +
                 "5) Cancel\n");
         String userInput = this.scanner.nextLine();
-        characterRace = characterRaceSelction(userInput);
+        characterRace = characterRaceSelection(userInput);
 
         return characterRace;
     }
 
     // Method to handle the base race input
-    private Race characterRaceSelction(String userInput) {
+    private Race characterRaceSelection(String userInput) {
         Race characterRace = null;
         // Handling the input
         switch(userInput) {
@@ -214,20 +214,42 @@ public class Cli {
                 "4) Wizard.\n" +
                 "5) Cancel\n");
         String userInput = this.scanner.nextLine();
+        characterClass = characterClassSelection(userInput);
 
+       return characterClass;
+    }
+
+    private DnDClass characterClassSelection(String userInput) {
+        DnDClass characterClass = null;
         // Handling the input
         switch(userInput) {
             case "1":
-                characterClass = getClericClass();
+                characterClass = GetGenericClass("cleric",
+                        "cleric",
+                        "lifedomaincleric",
+                        "Cleric",
+                        "Life Domain Cleric");
                 return  characterClass;
             case "2":
-                characterClass = getFighterClass();
+                characterClass = GetGenericClass("fighter",
+                        "fighter",
+                        "championfighter",
+                        "Fighter",
+                        "Champion Fighter");
                 return characterClass;
             case "3":
-                characterClass = getRogueClass();
+                characterClass = GetGenericClass("rogue",
+                        "rogue",
+                        "thiefrogue",
+                        "Rogue",
+                        "Thief Rogue");
                 return  characterClass;
             case "4":
-                characterClass = getWizardClass();
+                characterClass = GetGenericClass("wizard",
+                        "wizard",
+                        "evocationwizard",
+                        "Wizard",
+                        "Evocation Wizard");
                 return characterClass;
             case "5":
                 System.out.println("Cancelling and returning to the main menu");
@@ -238,127 +260,6 @@ public class Cli {
                         "How about you follow the instructions for a change?");
                 createCharacterClass();
                 break;
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterClass;
-    }
-
-    // Get the cleric
-    // NOTE class branch was merged after I started work on this branch
-    private DnDClass getClericClass() {
-        // Using the abstract factory
-        DnDClass characterClass = null;
-        AbstractFactoryDndClass classFactory =
-                FactoryProducerClass.getFactory(
-                "cleric");
-        System.out.println("Okay, what type of cleric would you like to be?:\n" +
-                "1) Cleric.\n" +
-                "2) Life Domain Cleric\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterClass = classFactory.getDndClass("cleric");
-                return characterClass;
-            case "2":
-                characterClass = classFactory.getDndClass("lifedomaincleric");
-                return characterClass;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterClass();
-            default:
-                error("This is not a valid input, try again...");
-                getClericClass();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterClass;
-    }
-
-    // Get the fighter
-    private DnDClass getFighterClass() {
-        // Using the abstract factory
-        DnDClass characterClass = null;
-        AbstractFactoryDndClass classFactory =
-                FactoryProducerClass.getFactory(
-                        "fighter");
-        System.out.println("Okay, what type of cleric would you like to be?:\n" +
-                "1) Fighter.\n" +
-                "2) Champion Fighter\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterClass = classFactory.getDndClass("fighter");
-                return characterClass;
-            case "2":
-                characterClass = classFactory.getDndClass("championfighter");
-                return characterClass;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterClass();
-            default:
-                error("This is not a valid input, try again...");
-                getFighterClass();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterClass;
-    }
-
-    // Get the Rogue
-    private DnDClass getRogueClass() {
-        // Using the abstract factory
-        DnDClass characterClass = null;
-        AbstractFactoryDndClass classFactory =
-                FactoryProducerClass.getFactory(
-                        "rogue");
-        System.out.println("Okay, what type of cleric would you like to be?:\n" +
-                "1) Rogue.\n" +
-                "2) Thief Rogue\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterClass = classFactory.getDndClass("rogue");
-                return characterClass;
-            case "2":
-                characterClass = classFactory.getDndClass("thiefrogue");
-                return characterClass;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterClass();
-            default:
-                error("This is not a valid input, try again...");
-                getRogueClass();
-        }
-        // Null is okay here since this line will never actually kick in.
-        return characterClass;
-    }
-
-    // Get the wizard
-    private DnDClass getWizardClass() {
-        // Using the abstract factory
-        DnDClass characterClass = null;
-        AbstractFactoryDndClass classFactory =
-                FactoryProducerClass.getFactory(
-                        "wizard");
-        System.out.println("Okay, what type of cleric would you like to be?:\n" +
-                "1) Wizard.\n" +
-                "2) Evocation Wizard\n" +
-                "3) Cancel\n");
-        String userInput = this.scanner.nextLine();
-        switch (userInput) {
-            case "1":
-                characterClass = classFactory.getDndClass("wizard");
-                return characterClass;
-            case "2":
-                characterClass = classFactory.getDndClass("evocationwizard");
-                return characterClass;
-            case "3":
-                System.out.println("Cancelling and returning to previous menu");
-                createCharacterClass();
-            default:
-                error("This is not a valid input, try again...");
-                getWizardClass();
         }
         // Null is okay here since this line will never actually kick in.
         return characterClass;
@@ -379,7 +280,7 @@ public class Cli {
         if(subRace2.equals("null")) {
             text = "Okay, what type of " + baseRace + " would you like to be?:\n" +
                     "1) " + subRace1Text + ".\n" +
-                    "2) Cancel.\n"
+                    "2) Cancel.\n";
         }
         else {
             text = "Okay, what type of " + baseRace + " would you like to be?:\n" +
@@ -434,6 +335,63 @@ public class Cli {
         }
         //Can be null since code never reaches this line
         return characterRace;
+    }
+
+    // Generic class selector helper
+    private DnDClass GetGenericClass(String baseClass,
+                                     String subClass1,
+                                     String subClass2,
+                                     String subClass1Text,
+                                     String subClass2Text) {
+        DnDClass characterClass = null;
+        String cancel = "Cancelling and returning to previous menu";
+        String errorMessage = "This is not a valid input, try again...";
+        String text = "Okay, what type of " + baseClass +
+                " would you like to be?:\n" +
+                "1) " + subClass1Text + ".\n" +
+                "2) " + subClass2Text + ".\n" +
+                "3) Cancel.\n";
+
+        // Making an abstract factory to handle the creation process
+        AbstractFactoryDndClass classFactory =
+                FactoryProducerClass.getFactory(baseClass);
+        System.out.println(text);
+        String userInput = scanner.nextLine();
+        characterClass = GenericClassValidator(classFactory,
+                userInput,
+                subClass1,
+                subClass2,
+                cancel,
+                errorMessage);
+
+        return characterClass;
+    }
+
+    // Generic creator for classes
+    private DnDClass GenericClassValidator(
+            AbstractFactoryDndClass classFactory,
+            String userInput,
+            String subClass1,
+            String subClass2,
+            String cancel,
+            String errorMessage) {
+        DnDClass characterClass = null;
+        switch (userInput) {
+            case "1":
+                characterClass = classFactory.getDndClass(subClass1);
+                return characterClass;
+            case "2":
+                characterClass = classFactory.getDndClass(subClass2);
+                return characterClass;
+            case "3":
+                System.out.println(cancel);
+                createCharacterRace();
+            default:
+                error(errorMessage);
+                createCharacterRace();
+        }
+        //Can be null since code never reaches this line
+        return characterClass;
     }
 
     // Temp method while implementing functionality
