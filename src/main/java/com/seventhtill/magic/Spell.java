@@ -3,6 +3,7 @@ package com.seventhtill.magic;
 import java.util.List;
 
 public class Spell {
+    private String spellName;
     private String magicSchool;
     private int spellLevel;
     private String castingTime;
@@ -16,10 +17,11 @@ public class Spell {
     private String description;
     private List<String> casterClasses;
 
-    public Spell(String magicSchool, int spellLevel, String castingTime, int rangeDistInFeet, String spellShape,
+    public Spell(String spellName, String magicSchool, int spellLevel, String castingTime, int rangeDistInFeet, String spellShape,
                  String duration, boolean vocal, boolean somatic, boolean concentration, List<String> components,
                  String description, List<String> casterClasses) {
 
+        this.spellName = spellName;
         this.magicSchool = magicSchool;
         this.spellLevel = spellLevel;
         this.castingTime = castingTime;
@@ -32,6 +34,10 @@ public class Spell {
         this.components = components;
         this.description = description;
         this.casterClasses = casterClasses;
+    }
+
+    public String getSpellName() {
+        return spellName;
     }
 
     public String getMagicSchool() {
