@@ -1,7 +1,7 @@
 package com.seventhtill.dndclass.rogue;
 
 public class ThiefRogue extends Rogue {
-private String name;
+    private String name;
     public ThiefRogue() {
         super();
         initName();
