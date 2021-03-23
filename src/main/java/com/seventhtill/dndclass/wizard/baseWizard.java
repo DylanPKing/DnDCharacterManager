@@ -34,7 +34,9 @@ public abstract class baseWizard implements DnDClass, Magical {
     }
 
     @Override
-    public void initName() {this.name = "WIZARD";}
+    public void initName() {
+        this.name = "WIZARD";
+    }
 
     @Override
     public void initHealth(){

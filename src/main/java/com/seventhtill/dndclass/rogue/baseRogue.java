@@ -32,7 +32,9 @@ public abstract class baseRogue implements DnDClass {
     }
 
     @Override
-    public void initName() { this.name = "THIEF";}
+    public void initName() {
+        this.name = "THIEF";
+    }
 
     @Override
     public void initHealth() {
@@ -88,7 +90,9 @@ public abstract class baseRogue implements DnDClass {
         this.abilities.add("Thieves' Cant");
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
     public int getHealth() {
         return health;

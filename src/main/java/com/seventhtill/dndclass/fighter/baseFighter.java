@@ -89,7 +89,9 @@ public abstract class baseFighter implements DnDClass {
         this.abilities.add("Second Wind");
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
     public int getHealth() {
         return health;

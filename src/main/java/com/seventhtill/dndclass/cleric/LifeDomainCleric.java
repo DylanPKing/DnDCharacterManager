@@ -18,12 +18,16 @@ public class LifeDomainCleric extends Cleric {
     }
 
     @Override
-    public void initName(){this.name = "LIFEDOMAINCLERIC";}
+    public void initName(){
+        this.name = "LIFEDOMAINCLERIC";
+    }
 
     public void initArmor() {
         this.heavyArmor = new ArrayList<>();
     }
 
     @Override
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 }

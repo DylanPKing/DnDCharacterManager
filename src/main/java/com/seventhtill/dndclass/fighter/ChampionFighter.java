@@ -8,8 +8,12 @@ private String name;
     }
 
     @Override
-    public void initName() {this.name = "CHAMPIONFIGHTER";}
+    public void initName() {
+        this.name = "CHAMPIONFIGHTER";
+    }
 
     @Override
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 }

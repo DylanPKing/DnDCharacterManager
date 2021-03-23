@@ -88,7 +88,9 @@ public abstract class baseCleric implements DnDClass, Magical {
         this.spells.add(spell);
     }
 
-    public String getName() {return name;};
+    public String getName() {
+        return name;
+    }
 
     public int getHealth() {
         return health;

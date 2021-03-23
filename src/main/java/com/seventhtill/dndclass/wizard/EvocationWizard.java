@@ -8,8 +8,12 @@ public class EvocationWizard extends baseWizard {
     }
 
     @Override
-    public void initName() {this.name = "EVOCATIONWIZARD";}
+    public void initName() {
+        this.name = "EVOCATIONWIZARD";
+    }
 
     @Override
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 }
