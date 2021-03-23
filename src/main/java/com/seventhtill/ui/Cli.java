@@ -280,7 +280,7 @@ public class Cli {
         String userInput = this.scanner.nextLine();
         switch (userInput) {
             case "1":
-                characterRace = raceFactory.getRace("highelf");
+                characterRace = raceFactory.getRace("standardhuman");
                 return characterRace;
             case "2":
                 System.out.println("Cancelling and returning to previous menu");
