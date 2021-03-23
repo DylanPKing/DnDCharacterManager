@@ -14,4 +14,9 @@ public class Cleric extends baseCleric implements DnDClass, Magical {
         addSpell("Divine Domain");
     }
 
+    @Override
+    public String getName() {
+        return getName();
+    }
+
 }

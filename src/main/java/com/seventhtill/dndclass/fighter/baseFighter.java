@@ -8,6 +8,7 @@ import com.seventhtill.item.weapon.SimpleWeapon;
 import java.util.ArrayList;
 
 public abstract class baseFighter implements DnDClass {
+    private String name;
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
@@ -21,6 +22,7 @@ public abstract class baseFighter implements DnDClass {
     private ArrayList<String> abilities;
 
     baseFighter() {
+        initName();
         initHealth();
         initHitDice();
         initArmor();
@@ -30,6 +32,8 @@ public abstract class baseFighter implements DnDClass {
         initSkills();
         initAbilities();
     }
+    @Override
+    public void initName() { this.name = "FIGHTER";}
 
     @Override
     public void initHealth() {
@@ -84,6 +88,8 @@ public abstract class baseFighter implements DnDClass {
         this.abilities.add("Fighting Style");
         this.abilities.add("Second Wind");
     }
+
+    public String getName() {return name;}
 
     public int getHealth() {
         return health;

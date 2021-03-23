@@ -10,6 +10,7 @@ import com.seventhtill.magic.Magical;
 import java.util.ArrayList;
 
 public abstract class baseWizard implements DnDClass, Magical {
+    private String name;
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
@@ -22,6 +23,7 @@ public abstract class baseWizard implements DnDClass, Magical {
     private ArrayList<String> spells;
 
     baseWizard(){
+        initName();
         initHealth();
         initHitDice();
         initArmor();
@@ -30,6 +32,9 @@ public abstract class baseWizard implements DnDClass, Magical {
         initSavingThrows();
         initSpells();
     }
+
+    @Override
+    public void initName() {this.name = "WIZARD";}
 
     @Override
     public void initHealth(){
