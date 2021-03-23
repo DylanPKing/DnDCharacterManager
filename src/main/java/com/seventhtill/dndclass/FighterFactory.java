@@ -10,7 +10,7 @@ public class FighterFactory extends AbstractFactoryDndClass {
             return new Fighter();
         }
         else if(classType.equalsIgnoreCase(
-                "CHAMPION FIGHTER")) {
+                "CHAMPIONFIGHTER")) {
             return new ChampionFighter();
         }
         return null;

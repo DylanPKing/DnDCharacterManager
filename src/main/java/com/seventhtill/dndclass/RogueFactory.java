@@ -11,7 +11,7 @@ public class RogueFactory extends AbstractFactoryDndClass {
             return new Rogue();
         }
         else if(classType.equalsIgnoreCase(
-                "THIEF ROGUE")) {
+                "THIEFROGUE")) {
             return new ThiefRogue();
         }
         return null;

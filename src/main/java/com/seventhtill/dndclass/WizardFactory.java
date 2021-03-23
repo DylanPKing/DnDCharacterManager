@@ -10,7 +10,7 @@ public class WizardFactory extends AbstractFactoryDndClass {
             return new Wizard();
         }
         else if(classType.equalsIgnoreCase(
-                "EVOCATION WIZARD")) {
+                "EVOCATIONWIZARD")) {
             return new EvocationWizard();
         }
         return null;

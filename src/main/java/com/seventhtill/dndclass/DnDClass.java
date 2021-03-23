@@ -1,9 +1,6 @@
 package com.seventhtill.dndclass;
 
-import com.seventhtill.item.Armor;
 import com.seventhtill.item.weapon.SimpleWeapon;
-
-import javax.crypto.AEADBadTagException;
 import java.util.ArrayList;
 
 public interface DnDClass {

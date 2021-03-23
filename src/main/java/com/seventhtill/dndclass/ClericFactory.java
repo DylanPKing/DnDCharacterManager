@@ -10,7 +10,7 @@ public class ClericFactory extends AbstractFactoryDndClass {
             return new Cleric();
         }
         else if(classType.equalsIgnoreCase(
-                "LIFE DOMAIN CLERIC")) {
+                "LIFEDOMAINCLERIC")) {
             return new LifeDomainCleric();
         }
         return null;
