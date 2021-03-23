@@ -13,8 +13,11 @@ public class CharacterDirector {
     }
 
     public void makeCharacter() {
-        this.characterBuilder.buildCharacterClass();
+        this.characterBuilder.buildCharacterName();
         this.characterBuilder.buildCharacterRace();
+        this.characterBuilder.buildCharacterClass();
         this.characterBuilder.buildCharacterItems();
+        this.characterBuilder.buildCharacterWeapon();
+        this.characterBuilder.buildCharacterArmour();
     }
 }

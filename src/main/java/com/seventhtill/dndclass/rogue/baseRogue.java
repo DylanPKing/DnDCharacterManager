@@ -2,7 +2,7 @@ package com.seventhtill.dndclass.rogue;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.Armor;
+import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.SimpleWeapon;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public abstract class baseRogue implements DnDClass {
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
-    private ArrayList<Armor> lightArmor;
+    private ArrayList<Armour> lightArmor;
     private ArrayList<SimpleWeapon> weapons;
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
@@ -91,7 +91,7 @@ public abstract class baseRogue implements DnDClass {
         return hitDie.getHitDie();
     }
 
-    public ArrayList<Armor> getLightArmor() {
+    public ArrayList<Armour> getLightArmor() {
         return lightArmor;
     }
 
