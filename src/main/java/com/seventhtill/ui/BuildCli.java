@@ -1,11 +1,11 @@
-package com.seventhtill;
+package com.seventhtill.ui;
 
 // Command class implementing command
 public class BuildCli  implements Command {
     private Cli ui;
 
     // Constructor
-    BuildCli(Cli ui) {
+    public BuildCli(Cli ui) {
         this.ui = ui;
     }
 
@@ -14,5 +14,4 @@ public class BuildCli  implements Command {
     public void execute() {
         this.ui.mainMenu();
     }
-
 }

@@ -1,4 +1,6 @@
-package com.seventhtill;
+package com.seventhtill.ui;
+
+import com.seventhtill.ui.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ public class CommandInvoker {
     private List<Command> commandList;
 
     // Constructor
-    CommandInvoker() {
+    public CommandInvoker() {
         initCommandList();
     }
 

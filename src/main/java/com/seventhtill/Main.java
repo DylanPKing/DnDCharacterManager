@@ -1,8 +1,8 @@
 package com.seventhtill;
 
-import com.seventhtill.race.AbstractFactory;
-import com.seventhtill.race.FactoryProducer;
-import com.seventhtill.race.Race;
+import com.seventhtill.ui.BuildCli;
+import com.seventhtill.ui.Cli;
+import com.seventhtill.ui.CommandInvoker;
 
 public class Main {
     public static void main(String[] args) {
