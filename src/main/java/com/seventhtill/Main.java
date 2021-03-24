@@ -1,6 +1,6 @@
 package com.seventhtill;
 
-import com.seventhtill.characterSheet.Character;
+import com.seventhtill.characterSheet.DnDCharacter;
 import com.seventhtill.characterSheet.CharacterBuilder;
 import com.seventhtill.characterSheet.CharacterDirector;
 import com.seventhtill.characterSheet.CharacterSheet;
@@ -8,7 +8,6 @@ import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.FactoryProducerClass;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.cleric.Cleric;
-import com.seventhtill.item.Item;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.armour.HeavyArmour;
 import com.seventhtill.item.weapon.SimpleWeapon;
@@ -40,7 +39,7 @@ public class Main {
         CharacterDirector characterDirector = new CharacterDirector(newCharacter);
         characterDirector.makeCharacter();
 
-        Character aNewCharacter = characterDirector.getCharacter();
+        DnDCharacter aNewCharacter = characterDirector.getCharacter();
         Race elf = new HighElf();
         DnDClass cleric = new Cleric();
         //Can't make an item right now

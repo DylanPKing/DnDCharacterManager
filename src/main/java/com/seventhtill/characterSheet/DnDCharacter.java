@@ -6,7 +6,7 @@ import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.Weapon;
 import com.seventhtill.race.Race;
 
-public class Character implements CharacterSheetPlan{
+public class DnDCharacter implements CharacterSheetPlan{
     //Defines the specifics of the character
     private String characterName;
     private Race characterRace;

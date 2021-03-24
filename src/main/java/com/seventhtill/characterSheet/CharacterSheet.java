@@ -1,16 +1,10 @@
 package com.seventhtill.characterSheet;
 
-import com.seventhtill.dndclass.DnDClass;
-import com.seventhtill.item.Item;
-import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.weapon.Weapon;
-import com.seventhtill.race.Race;
-
 public class CharacterSheet implements CharacterBuilder{
-    private Character character;
+    private DnDCharacter character;
 
     public CharacterSheet() {
-        this.character = new Character();
+        this.character = new DnDCharacter();
     }
 
     @Override
@@ -43,7 +37,7 @@ public class CharacterSheet implements CharacterBuilder{
         character.setCharacterArmour(character.getCharacterArmour());
     }
 
-    public Character getCharacter() {
+    public DnDCharacter getCharacter() {
         return this.character;
     }
 }

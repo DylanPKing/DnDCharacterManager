@@ -14,5 +14,5 @@ public interface CharacterBuilder {
 
     void buildCharacterArmour();
 
-    Character getCharacter();
+    DnDCharacter getCharacter();
 }

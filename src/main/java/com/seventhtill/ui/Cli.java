@@ -1,6 +1,12 @@
 package com.seventhtill.ui;
 
+import com.seventhtill.characterSheet.CharacterBuilder;
+import com.seventhtill.characterSheet.CharacterDirector;
+import com.seventhtill.characterSheet.CharacterSheet;
+import com.seventhtill.characterSheet.DnDCharacter;
+import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.DnDClass;
+import com.seventhtill.dndclass.FactoryProducerClass;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.armour.HeavyArmour;
 import com.seventhtill.item.weapon.SimpleWeapon;
@@ -84,20 +90,20 @@ public class Cli {
         String characterName = createCharacterName();
         Race characterRace = createCharacterRace();
         DnDClass characterClass = createCharacterClass();
-        Character character invokeBuilder(
+        DnDCharacter character = invokeBuilder(
                 characterName, characterRace, characterClass);
     }
 
     // NOTE the builder hasn't been merged yet, so I'm making
     // NOTE a wild assumption that this will work once the builder is merged in
     // Method that invokes the builder to build the new character
-    private Character invokeBuilder(
+    private DnDCharacter invokeBuilder(
             String name, Race race, DnDClass DndClass) {
         CharacterBuilder newCharacter = new CharacterSheet();
         CharacterDirector director = new CharacterDirector(newCharacter);
         director.makeCharacter();
 
-        Character aNewCharacter = director.getCharacter();
+        DnDCharacter aNewCharacter = director.getCharacter();
 
         // These are temporary fillers before the implementation of ui
         Armour armour = new HeavyArmour(20,"Platemail",
@@ -112,11 +118,13 @@ public class Cli {
         aNewCharacter.setCharacterClass(DndClass);
         aNewCharacter.setCharacterArmour(armour);
         aNewCharacter.setCharacterWeapon(weapon);
+
+        return aNewCharacter;
     }
 
     // The method to create a name
     private String createCharacterName(){
-        String characterName = "";
+        String characterName;
         Pattern pattern = Pattern.compile(
                         "[^abcdefghijklmnopqrstuvwxyz'\\s]",
                         Pattern.CASE_INSENSITIVE);
@@ -141,7 +149,7 @@ public class Cli {
 
     // The method to create a race
     private Race createCharacterRace() {
-        Race characterRace = null;
+        Race characterRace;
         // Using the abstract factory to create a race
         System.out.println("Next, choose your race:\n" +
                 "1) Dwarf.\n" +
@@ -204,7 +212,7 @@ public class Cli {
 
     // Method that will create a DnDClass
     private DnDClass createCharacterClass() {
-        DnDClass characterClass = null;
+        DnDClass characterClass;
 
         // Using the abstract factory to create a class
         System.out.println("Now, choose your class:\n" +
@@ -271,12 +279,12 @@ public class Cli {
                                 String subRace2,
                                 String subRace1Text,
                                 String subRace2Text) {
-        Race characterRace = null;
+        Race characterRace;
         String cancel = "Cancelling and returning to previous menu";
         String errorMessage = "This is not a valid input, try again...";
 
         // Setting the prompt text
-        String text = "";
+        String text;
         if(subRace2.equals("null")) {
             text = "Okay, what type of " + baseRace + " would you like to be?:\n" +
                     "1) " + subRace1Text + ".\n" +
@@ -343,7 +351,7 @@ public class Cli {
                                      String subClass2,
                                      String subClass1Text,
                                      String subClass2Text) {
-        DnDClass characterClass = null;
+        DnDClass characterClass;
         String cancel = "Cancelling and returning to previous menu";
         String errorMessage = "This is not a valid input, try again...";
         String text = "Okay, what type of " + baseClass +
@@ -409,6 +417,6 @@ public class Cli {
 
     // Custom error message
     private void error(String errorMessage) {
-        System.out.printf(errorMessage);
+        System.out.print(errorMessage);
     }
 }
