@@ -2,7 +2,7 @@ package com.seventhtill.dndclass.fighter;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.armour.Armour;
+import com.seventhtill.item.armour.ArmourComposite;
 import com.seventhtill.item.weapon.SimpleWeapon;
 
 import java.util.ArrayList;
@@ -12,9 +12,7 @@ public abstract class baseFighter implements DnDClass {
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
-    private ArrayList<Armour> lightArmor;
-    private ArrayList<Armour> mediumArmor;
-    private ArrayList<Armour> heavyArmor;
+    private ArmourComposite armour;
     private ArrayList<SimpleWeapon> weapons;
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
@@ -49,9 +47,7 @@ public abstract class baseFighter implements DnDClass {
 
     @Override
     public void initArmor() {
-        this.lightArmor = new ArrayList<>();
-        this.mediumArmor = new ArrayList<>();
-        this.heavyArmor = new ArrayList<>();
+        this.armour = new ArmourComposite();
         //add method to populate chosen armour
     }
 
@@ -101,16 +97,8 @@ public abstract class baseFighter implements DnDClass {
         return hitDie.getHitDie();
     }
 
-    public ArrayList<Armour> getLightArmor() {
-        return lightArmor;
-    }
-
-    public ArrayList<Armour> getMediumArmor() {
-        return mediumArmor;
-    }
-
-    public ArrayList<Armour> getHeavyArmor() {
-        return heavyArmor;
+    public ArmourComposite getArmour() {
+        return armour;
     }
 
     public ArrayList<SimpleWeapon> getWeapons() {
