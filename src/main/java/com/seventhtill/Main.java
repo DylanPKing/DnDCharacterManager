@@ -18,6 +18,9 @@ import com.seventhtill.race.AbstractFactory;
 import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
 import com.seventhtill.race.elf.HighElf;
+import com.seventhtill.ui.BuildCli;
+import com.seventhtill.ui.Cli;
+import com.seventhtill.ui.CommandInvoker;
 
 import java.util.List;
 
@@ -59,5 +62,13 @@ public class Main {
         System.out.println("Character Items: " + aNewCharacter.getCharacterItem());
         System.out.println("Character Armour: " + aNewCharacter.getCharacterArmour());
         System.out.println("Character Weapon: " + aNewCharacter.getCharacterWeapon());
+        // Set up the runtime using the command pattern
+        Cli ui = new Cli();
+        BuildCli setupUi = new BuildCli(ui);
+        CommandInvoker command = new CommandInvoker();
+        command.addCommand(setupUi);
+
+        // Execute the commands that were set up
+        command.executeCommands();
     }
 }
