@@ -2,7 +2,7 @@ package com.seventhtill.dndclass.cleric;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.armour.Armour;
+import com.seventhtill.item.armour.ArmourComposite;
 import com.seventhtill.item.weapon.SimpleWeapon;
 import com.seventhtill.magic.Magical;
 
@@ -13,8 +13,7 @@ public abstract class baseCleric implements DnDClass, Magical {
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
-    private ArrayList<Armour> lightArmor;
-    private ArrayList<Armour> mediumArmor;
+    private ArmourComposite armour;
     private ArrayList<SimpleWeapon> weapons;
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
@@ -50,8 +49,7 @@ public abstract class baseCleric implements DnDClass, Magical {
 
     @Override
     public void initArmor(){
-        this.lightArmor = new ArrayList<>();
-        this.mediumArmor = new ArrayList<>();
+        this.armour = new ArmourComposite();
         //add method to populate chosen armour
     }
 
@@ -100,12 +98,8 @@ public abstract class baseCleric implements DnDClass, Magical {
         return hitDie.getHitDie();
     }
 
-    public ArrayList<Armour> getLightArmor() {
-        return lightArmor;
-    }
-
-    public ArrayList<Armour> getMediumArmor() {
-        return mediumArmor;
+    public ArmourComposite getArmour() {
+        return armour;
     }
 
     public ArrayList<SimpleWeapon> getWeapons() {

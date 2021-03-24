@@ -1,13 +1,10 @@
 package com.seventhtill.dndclass.cleric;
 
-import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.armour.Armour;
-
-import java.util.ArrayList;
+import com.seventhtill.item.armour.ArmourComposite;
 
 public class LifeDomainCleric extends Cleric {
     private String name;
-    private ArrayList<Armour> heavyArmor;
+    private ArmourComposite armour;
 
     public LifeDomainCleric() {
         super();
@@ -23,7 +20,7 @@ public class LifeDomainCleric extends Cleric {
     }
 
     public void initArmor() {
-        this.heavyArmor = new ArrayList<>();
+        this.armour = new ArmourComposite();
     }
 
     @Override

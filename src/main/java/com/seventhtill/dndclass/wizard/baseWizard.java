@@ -3,7 +3,6 @@ package com.seventhtill.dndclass.wizard;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
 
-import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.SimpleWeapon;
 import com.seventhtill.magic.Magical;
 
@@ -13,8 +12,6 @@ public abstract class baseWizard implements DnDClass, Magical {
     private String name;
     private int health;
     private HitDice hitDie;
-    //Has to be updated after merge
-    private ArrayList<Armour> wizardRobes;
     private ArrayList<SimpleWeapon> weapons;
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
@@ -52,8 +49,6 @@ public abstract class baseWizard implements DnDClass, Magical {
 
     @Override
     public void initArmor(){
-        //add method to populate chosen armour
-        this.wizardRobes = new ArrayList<>();
     }
 
     @Override
@@ -95,10 +90,6 @@ public abstract class baseWizard implements DnDClass, Magical {
 
     public int getHitDie() {
         return hitDie.getHitDie();
-    }
-
-    public ArrayList<Armour> getWizardRobes() {
-        return wizardRobes;
     }
 
     public ArrayList<SimpleWeapon> getWeapons() {
