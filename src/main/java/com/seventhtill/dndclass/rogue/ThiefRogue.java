@@ -1,13 +1,19 @@
 package com.seventhtill.dndclass.rogue;
 
-import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.Armor;
-
-import java.util.ArrayList;
-
 public class ThiefRogue extends Rogue {
-
+    private String name;
     public ThiefRogue() {
         super();
+        initName();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "THIEFROGUE";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

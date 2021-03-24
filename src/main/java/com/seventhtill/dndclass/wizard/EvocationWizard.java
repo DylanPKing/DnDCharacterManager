@@ -1,12 +1,19 @@
 package com.seventhtill.dndclass.wizard;
 
-import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.Armor;
-
-import java.util.ArrayList;
-
 public class EvocationWizard extends baseWizard {
+    private String name;
     public EvocationWizard(){
         super();
+        initName();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "EVOCATIONWIZARD";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

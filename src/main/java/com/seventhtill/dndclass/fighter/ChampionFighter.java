@@ -1,13 +1,19 @@
 package com.seventhtill.dndclass.fighter;
 
-import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.Armor;
-
-import java.util.ArrayList;
-
 public class ChampionFighter extends baseFighter {
-
+private String name;
     public ChampionFighter(){
         super();
+        initName();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "CHAMPIONFIGHTER";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

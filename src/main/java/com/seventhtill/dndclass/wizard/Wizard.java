@@ -13,4 +13,9 @@ public class Wizard extends baseWizard {
         addSpell("Spellcasting");
         addSpell("Divine Domain");
     }
+
+    @Override
+    public String getName() {
+        return getName();
+    }
 }

@@ -2,18 +2,19 @@ package com.seventhtill.dndclass.cleric;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
-import com.seventhtill.item.Armor;
+import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.SimpleWeapon;
 import com.seventhtill.magic.Magical;
 
 import java.util.ArrayList;
 
 public abstract class baseCleric implements DnDClass, Magical {
+    private String name;
     private int health;
     private HitDice hitDie;
     //Has to be updated after merge
-    private ArrayList<Armor> lightArmor;
-    private ArrayList<Armor> mediumArmor;
+    private ArrayList<Armour> lightArmor;
+    private ArrayList<Armour> mediumArmor;
     private ArrayList<SimpleWeapon> weapons;
     private ArrayList<String> tools;
     private ArrayList<String> savingThrows;
@@ -22,6 +23,7 @@ public abstract class baseCleric implements DnDClass, Magical {
     private ArrayList<String> spells;
 
     baseCleric(){
+        initName();
         initHealth();
         initHitDice();
         initArmor();
@@ -30,6 +32,9 @@ public abstract class baseCleric implements DnDClass, Magical {
         initSavingThrows();
         initSpells();
     }
+
+    @Override
+    public void initName() {this.name = "CLERIC";}
 
     @Override
     public void initHealth(){
@@ -83,6 +88,10 @@ public abstract class baseCleric implements DnDClass, Magical {
         this.spells.add(spell);
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getHealth() {
         return health;
     }
@@ -91,11 +100,11 @@ public abstract class baseCleric implements DnDClass, Magical {
         return hitDie.getHitDie();
     }
 
-    public ArrayList<Armor> getLightArmor() {
+    public ArrayList<Armour> getLightArmor() {
         return lightArmor;
     }
 
-    public ArrayList<Armor> getMediumArmor() {
+    public ArrayList<Armour> getMediumArmor() {
         return mediumArmor;
     }
 
@@ -118,4 +127,5 @@ public abstract class baseCleric implements DnDClass, Magical {
     public ArrayList<String> getSpells() {
         return spells;
     }
+
 }
