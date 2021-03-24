@@ -1,6 +1,12 @@
 package com.seventhtill.dndclass.fighter;
 
-import com.seventhtill.dndclass.DnDClass;
+public class Fighter extends baseFighter {
 
-public abstract class Fighter implements DnDClass {
+    public Fighter(){ super(); }
+
+    @Override
+    public String getName() {
+        return getName();
+    }
+
 }

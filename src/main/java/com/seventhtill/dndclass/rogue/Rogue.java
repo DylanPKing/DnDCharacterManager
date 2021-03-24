@@ -1,6 +1,11 @@
 package com.seventhtill.dndclass.rogue;
 
-import com.seventhtill.dndclass.DnDClass;
-
-public abstract class Rogue implements DnDClass {
+public class Rogue extends baseRogue {
+    public Rogue() {
+        super();
+    }
+    @Override
+    public String getName() {
+        return getName();
+    }
 }
