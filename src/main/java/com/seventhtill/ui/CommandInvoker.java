@@ -1,7 +1,5 @@
 package com.seventhtill.ui;
 
-import com.seventhtill.ui.Command;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -78,7 +78,7 @@ public class Spell {
         return description;
     }
 
-//    public boolean canCast(Character character) {
+//    public boolean canCast(DnDCharacter character) {
 //        String charClass = character.getClass().getClassName();
 //        return casterClasses.contains(charClass);
 //    }

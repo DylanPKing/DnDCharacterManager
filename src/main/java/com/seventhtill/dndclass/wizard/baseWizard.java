@@ -84,6 +84,11 @@ public abstract class baseWizard implements DnDClass, Magical {
         this.spells.add(spell);
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     public int getHealth() {
         return health;
     }

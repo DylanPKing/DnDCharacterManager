@@ -8,7 +8,7 @@ public class CharacterDirector {
         this.characterBuilder = characterBuilder;
     }
 
-    public Character getCharacter(){
+    public DnDCharacter getCharacter(){
         return this.characterBuilder.getCharacter();
     }
 
