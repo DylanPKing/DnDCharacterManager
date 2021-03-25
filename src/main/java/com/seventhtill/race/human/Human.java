@@ -31,7 +31,7 @@ public abstract class Human implements Race {
     private void initAbilityScoreIncrease() {
         this.abilityScoreIncrease = new HashMap<>();
         // Humans get +1 to all ability scores
-        this.abilityScoreIncrease.put("Strenght", 1);
+        this.abilityScoreIncrease.put("Strength", 1);
         this.abilityScoreIncrease.put("Dexterity", 1);
         this.abilityScoreIncrease.put("Constitution", 1);
         this.abilityScoreIncrease.put("Intelligence", 1);
