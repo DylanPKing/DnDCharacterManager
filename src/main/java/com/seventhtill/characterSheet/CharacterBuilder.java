@@ -8,6 +8,8 @@ public interface CharacterBuilder {
 
     void buildCharacterClass();
 
+    void buildCharacterAttributes();
+
     void buildCharacterItems();
 
     void buildCharacterWeapon();
