@@ -4,24 +4,25 @@ import com.seventhtill.characterSheet.CharacterBuilder;
 import com.seventhtill.characterSheet.CharacterDirector;
 import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
+import com.seventhtill.common.DamageType;
 import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.FactoryProducerClass;
+import com.seventhtill.dndclass.cleric.baseCleric;
+import com.seventhtill.dndclass.fighter.baseFighter;
+import com.seventhtill.dndclass.rogue.baseRogue;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.armour.HeavyArmour;
-import com.seventhtill.item.weapon.SimpleWeapon;
-import com.seventhtill.item.weapon.Weapon;
-import com.seventhtill.item.weapon.WeaponAttackType;
+import com.seventhtill.item.weapon.*;
 import com.seventhtill.race.AbstractFactory;
 import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // Class that will be responsible for the Command Line Interface
 // NOTE only public methods are implemented using the command
@@ -92,15 +93,24 @@ public class Cli {
         String characterName = createCharacterName();
         Race characterRace = createCharacterRace();
         DnDClass characterClass = createCharacterClass();
+        Weapon characterWeapon = createCharacterWeapon(characterClass);
         HashMap<String, Integer> characterAttributes =
-                createCharacterAttributes();
+                createCharacterAttributes(characterRace);
+
+        // Add the created properties to the built character
         DnDCharacter character = invokeBuilder(
                 characterName, characterRace, characterClass,
                 characterAttributes);
-        System.out.println(character.getCharacterName());
-        System.out.println(character.getCharacterRace());
-        System.out.println(character.getCharacterClass());
+        System.out.println(characterWeapon.getName());
+        //EndCli();
+
+//        System.out.println(character.getCharacterName());
+//        System.out.println(character.getCharacterRace());
+//        System.out.println(character.getCharacterClass());
         // There will be a call to write to db here.
+
+        // Then back to main menu
+        mainMenu();
     }
 
     // NOTE the builder hasn't been merged yet, so I'm making
@@ -214,7 +224,7 @@ public class Cli {
             default:
                 error("'" + userInput + "' is not a valid input.\n" +
                         "How about you follow the instructions for a change?");
-                createCharacterRace();
+                mainMenu();
                 break;
         }
         // Null is okay here since this line will never actually kick in.
@@ -277,7 +287,7 @@ public class Cli {
             default:
                 error("'" + userInput + "' is not a valid input.\n" +
                         "How about you follow the instructions for a change?");
-                createCharacterClass();
+                mainMenu();
                 break;
         }
         // Null is okay here since this line will never actually kick in.
@@ -337,20 +347,20 @@ public class Cli {
             case "2":
                 if(subRace2.equals("null")) {
                     System.out.println(cancel);
-                    createCharacterRace();
+                    mainMenu();
                 }
                 characterRace = raceFactory.getRace(subRace2);
                 return characterRace;
             case "3":
                 if(subRace2.equals("null")) {
                     error(errorMessage);
-                    createCharacterRace();
+                    mainMenu();
                 }
                 System.out.println(cancel);
-                createCharacterRace();
+                mainMenu();
             default:
                 error(errorMessage);
-                createCharacterRace();
+                mainMenu();
         }
         //Can be null since code never reaches this line
         return characterRace;
@@ -404,28 +414,145 @@ public class Cli {
                 return characterClass;
             case "3":
                 System.out.println(cancel);
-                createCharacterRace();
+                mainMenu();
             default:
                 error(errorMessage);
-                createCharacterRace();
+                mainMenu();
         }
         //Can be null since code never reaches this line
         return characterClass;
     }
 
     // Method to generate the starting attributes
-    private HashMap<String, Integer> createCharacterAttributes() {
+    private HashMap<String, Integer> createCharacterAttributes(Race race) {
         HashMap<String, Integer> characterAttributes = new HashMap<>();
         Random statValue = new Random();
 
         // The values are rolled with the allowable range being [3-18]
-        characterAttributes.put("Strength", statValue.nextInt(16) + 3);
-        characterAttributes.put("Dexterity", statValue.nextInt(16) + 3);
-        characterAttributes.put("Constitution", statValue.nextInt(16) + 3);
-        characterAttributes.put("Intelligence", statValue.nextInt(16) + 3);
-        characterAttributes.put("Wisdom", statValue.nextInt(16) + 3);
-        characterAttributes.put("Charisma", statValue.nextInt(16) + 3);
+        characterAttributes.put("Strength",
+                statValue.nextInt(16) + 3);
+        characterAttributes.put("Dexterity",
+                statValue.nextInt(16) + 3);
+        characterAttributes.put("Constitution",
+                statValue.nextInt(16) + 3);
+        characterAttributes.put("Intelligence",
+                statValue.nextInt(16) + 3);
+        characterAttributes.put("Wisdom",
+                statValue.nextInt(16) + 3);
+        characterAttributes.put("Charisma",
+                statValue.nextInt(16) + 3);
+        Map tempList = race.getAbilityScoreIncrease();
+        tempList.forEach((key, value) -> characterAttributes.put((String)key, characterAttributes.get(key) + (int)value));
         return  characterAttributes;
+    }
+
+    // Method that will handle the creation of starting weapons
+    private Weapon createCharacterWeapon(DnDClass dndClass) {
+        SimpleMeleeWeaponHelper simpleMeleeHelper =
+                new SimpleMeleeWeaponHelper();
+        SimpleRangedWeaponHelper simpleRangedHelper =
+                new SimpleRangedWeaponHelper();
+        MartialMeleeWeaponHelper martialMeleeHelper =
+                new MartialMeleeWeaponHelper();
+        MartialRangedWeaponHelper martialRangedHelper =
+                new MartialRangedWeaponHelper();
+        // First set up arrays of each type of weapon
+        ArrayList<Weapon> simpleMeleeWeapons = simpleMeleeHelper.init();
+        ArrayList<Weapon> simpleRangedWeapons =
+                simpleRangedHelper.init();
+        ArrayList<Weapon> martialMeleeWeapons = martialMeleeHelper.init();
+        ArrayList<Weapon> martialRangedWeapons = martialRangedHelper.init();
+        return weaponSelectWindow(dndClass, simpleMeleeWeapons,
+                simpleRangedWeapons, martialMeleeWeapons,
+                martialRangedWeapons);
+    }
+
+    // create the ui for weapon choice
+    private Weapon weaponSelectWindow(DnDClass dndClass,
+                                      ArrayList<Weapon> simpleMelee,
+                                      ArrayList<Weapon> simpleRanged,
+                                      ArrayList<Weapon> martialMelee,
+                                      ArrayList<Weapon> martialRanged) {
+        if(dndClass instanceof baseCleric) {
+            String text = "Now that you have decided to be a cleric, it's time " +
+                    "to choose your weapon.\n";
+            List<Weapon> clericWeapons =
+                    Stream.of(simpleMelee, simpleRanged).flatMap(
+                            Collection::stream).collect(Collectors.toList());
+            return displayWindow(clericWeapons, text);
+        }
+        else if(dndClass instanceof baseFighter) {
+            String text = "Now that you have decided to be a fighter, it's time " +
+                    "to choose your weapon.\n";
+            List<Weapon> fighterWeapons =
+                    Stream.of(simpleMelee, simpleRanged, martialMelee,
+                            martialRanged).flatMap(Collection::stream).collect(
+                                    Collectors.toList());
+            return displayWindow(fighterWeapons, text);
+
+        }
+        else if(dndClass instanceof baseRogue) {
+            String text = "Now that you have decided to be a rogue, it's time " +
+                    "to choose your weapon.\n";
+            // have to get specific martial weapons for the rogue
+            List<Weapon> allowedMartials = new ArrayList<>();
+            List<Weapon> allMartials =
+                    Stream.of(martialMelee, martialRanged).flatMap(
+                            Collection::stream).collect(Collectors.toList());
+            for(Weapon weapon : allMartials) {
+                switch (weapon.getName()) {
+                    case "Longsword":
+                    case "Rapier":
+                    case "Shortsword":
+                    case "Crossbow, hand":
+                        allowedMartials.add(weapon);
+                }
+            }
+            List<Weapon> rogueWeapons =
+                    Stream.of(simpleMelee, simpleRanged, allowedMartials).flatMap(
+                            Collection::stream).collect(Collectors.toList());
+            return displayWindow(rogueWeapons, text);
+        }
+        else {
+            String text = "Now that you have decided to be a wizard, it's time " +
+                    "to choose your weapon.\n";
+            List<Weapon> allSimples = Stream.of(simpleMelee,
+                    simpleRanged).flatMap(Collection::stream).collect(
+                            Collectors.toList());
+            List<Weapon> wizardWeapons = new ArrayList<>();
+            for(Weapon weapon : allSimples) {
+                switch (weapon.getName()) {
+                    case "Dagger":
+                    case "Dart":
+                    case "Sling":
+                    case "Quarterstaff":
+                    case "Crossbow, light":
+                        wizardWeapons.add(weapon);
+                }
+            }
+            return displayWindow(wizardWeapons, text);
+        }
+    }
+
+    private Weapon displayWindow(List<Weapon> weapons, String text) {
+        System.out.println(text);
+        int control = 0;
+        for(Weapon weapon : weapons) {
+            System.out.printf("%d) %s.\n", control + 1, weapon.getName());
+            control++;
+        }
+        System.out.printf("%d) Cancel.", control + 1);
+        String userInput = scanner.nextLine();
+        if(userInput.equals(String.valueOf(control + 1))) {
+            System.out.println("Cancelling and returning to main menu\n");
+            mainMenu();
+        }
+        for(int i = 0; i < control; i++) {
+            if(userInput.equals(String.valueOf(i + 1))) {
+                return weapons.get(i);
+            }
+        }
+        return null;
     }
 
     // Temp method while implementing functionality
