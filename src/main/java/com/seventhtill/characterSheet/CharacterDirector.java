@@ -16,6 +16,7 @@ public class CharacterDirector {
         this.characterBuilder.buildCharacterName();
         this.characterBuilder.buildCharacterRace();
         this.characterBuilder.buildCharacterClass();
+        this.characterBuilder.buildCharacterAttributes();
         this.characterBuilder.buildCharacterItems();
         this.characterBuilder.buildCharacterWeapon();
         this.characterBuilder.buildCharacterArmour();

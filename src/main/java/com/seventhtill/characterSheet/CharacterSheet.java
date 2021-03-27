@@ -1,5 +1,7 @@
 package com.seventhtill.characterSheet;
 
+import java.util.HashMap;
+
 public class CharacterSheet implements CharacterBuilder{
     private DnDCharacter character;
 
@@ -12,6 +14,7 @@ public class CharacterSheet implements CharacterBuilder{
         this.character.setCharacterName(character.getCharacterName());
     }
 
+
     @Override
     public void buildCharacterRace() {
         character.setCharacterRace(character.getCharacterRace());
@@ -20,6 +23,11 @@ public class CharacterSheet implements CharacterBuilder{
     @Override
     public void buildCharacterClass() {
         character.setCharacterClass(character.getCharacterClass());
+    }
+
+    @Override
+    public void buildCharacterAttributes() {
+        character.setCharacterAttributes((HashMap<String, Integer>) character.getCharacterAttributes());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.seventhtill.characterSheet;
+package com.seventhtill.dbManager;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.item.Item;
@@ -6,18 +6,22 @@ import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.Weapon;
 import com.seventhtill.race.Race;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class DnDCharacter implements CharacterSheetPlan{
-    //Defines the specifics of the character
+public class DnDCharacterDTO {
     private String characterName;
-    private Map<String, Integer> attributes;
     private Race characterRace;
     private DnDClass characterClass;
     private Item characterItem;
     private Weapon characterWeapon;
     private Armour characterArmour;
+
+    DnDCharacterDTO(String characterName, Race characterRace, DnDClass characterClass, Item characterItem, Weapon characterWeapon, Armour characterArmour) {
+        this.characterName = characterName;
+        this.characterRace = characterRace;
+        this.characterClass = characterClass;
+        this.characterItem = characterItem;
+        this.characterWeapon = characterWeapon;
+        this.characterArmour = characterArmour;
+    }
 
     public void setCharacterName(String name) {
         characterName = name;
@@ -27,7 +31,6 @@ public class DnDCharacter implements CharacterSheetPlan{
         return characterName;
     }
 
-    @Override
     public void setCharacterRace(Race race) {
         characterRace = race;
     }
@@ -36,7 +39,6 @@ public class DnDCharacter implements CharacterSheetPlan{
         return characterRace;
     }
 
-    @Override
     public void setCharacterClass(DnDClass aClass) {
         characterClass= aClass;
     }
@@ -45,16 +47,6 @@ public class DnDCharacter implements CharacterSheetPlan{
         return characterClass;
     }
 
-    public void setCharacterAttributes(HashMap<String, Integer> attributes) {
-        this.attributes = attributes;
-       // Race tempRace = getCharacterRace();
-        HashMap tempList = (HashMap) characterRace.getAbilityScoreIncrease();
-        tempList.forEach((key, value) -> attributes.put((String)key, attributes.get(key) + (int)value));
-    }
-
-    public Map getCharacterAttributes() {return attributes;}
-
-    @Override
     public void setCharacterItems(Item item) {
         characterItem = item;
     }
@@ -63,7 +55,6 @@ public class DnDCharacter implements CharacterSheetPlan{
         return characterItem;
     }
 
-    @Override
     public void setCharacterWeapon(Weapon weapon) {
         characterWeapon = weapon;
     }
@@ -72,7 +63,6 @@ public class DnDCharacter implements CharacterSheetPlan{
         return  characterWeapon;
     }
 
-    @Override
     public void setCharacterArmour(Armour armour) {
         characterArmour = armour;
     }
