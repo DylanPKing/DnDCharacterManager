@@ -92,6 +92,9 @@ public class Cli {
         DnDClass characterClass = createCharacterClass();
         DnDCharacter character = invokeBuilder(
                 characterName, characterRace, characterClass);
+        System.out.println(character.getCharacterName());
+        System.out.println(character.getCharacterRace());
+        System.out.println(character.getCharacterClass());
     }
 
     // NOTE the builder hasn't been merged yet, so I'm making
