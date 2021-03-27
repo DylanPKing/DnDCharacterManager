@@ -16,7 +16,9 @@ import com.seventhtill.race.AbstractFactory;
 import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,18 +92,23 @@ public class Cli {
         String characterName = createCharacterName();
         Race characterRace = createCharacterRace();
         DnDClass characterClass = createCharacterClass();
+        HashMap<String, Integer> characterAttributes =
+                createCharacterAttributes();
         DnDCharacter character = invokeBuilder(
-                characterName, characterRace, characterClass);
+                characterName, characterRace, characterClass,
+                characterAttributes);
         System.out.println(character.getCharacterName());
         System.out.println(character.getCharacterRace());
         System.out.println(character.getCharacterClass());
+        // There will be a call to write to db here.
     }
 
     // NOTE the builder hasn't been merged yet, so I'm making
     // NOTE a wild assumption that this will work once the builder is merged in
     // Method that invokes the builder to build the new character
     private DnDCharacter invokeBuilder(
-            String name, Race race, DnDClass DndClass) {
+            String name, Race race, DnDClass DndClass,
+            HashMap<String, Integer> characterAttributes) {
         CharacterBuilder newCharacter = new CharacterSheet();
         CharacterDirector director = new CharacterDirector(newCharacter);
         director.makeCharacter();
@@ -119,6 +126,7 @@ public class Cli {
         aNewCharacter.setCharacterName(name);
         aNewCharacter.setCharacterRace(race);
         aNewCharacter.setCharacterClass(DndClass);
+        aNewCharacter.setCharacterAttributes(characterAttributes);
         aNewCharacter.setCharacterArmour(armour);
         aNewCharacter.setCharacterWeapon(weapon);
 
@@ -403,6 +411,21 @@ public class Cli {
         }
         //Can be null since code never reaches this line
         return characterClass;
+    }
+
+    // Method to generate the starting attributes
+    private HashMap<String, Integer> createCharacterAttributes() {
+        HashMap<String, Integer> characterAttributes = new HashMap<>();
+        Random statValue = new Random();
+
+        // The values are rolled with the allowable range being [3-18]
+        characterAttributes.put("Strength", statValue.nextInt(16) + 3);
+        characterAttributes.put("Dexterity", statValue.nextInt(16) + 3);
+        characterAttributes.put("Constitution", statValue.nextInt(16) + 3);
+        characterAttributes.put("Intelligence", statValue.nextInt(16) + 3);
+        characterAttributes.put("Wisdom", statValue.nextInt(16) + 3);
+        characterAttributes.put("Charisma", statValue.nextInt(16) + 3);
+        return  characterAttributes;
     }
 
     // Temp method while implementing functionality
