@@ -1,20 +1,10 @@
 package com.seventhtill.characterSheet;
 
-import com.seventhtill.dndclass.DnDClass;
-import com.seventhtill.dndclass.cleric.Cleric;
-import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.armour.HeavyArmour;
-import com.seventhtill.item.armour.LightArmour;
-import com.seventhtill.item.weapon.SimpleWeapon;
-import com.seventhtill.item.weapon.Weapon;
-import com.seventhtill.item.weapon.WeaponAttackType;
 import com.seventhtill.race.Race;
 import com.seventhtill.race.elf.HighElf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
