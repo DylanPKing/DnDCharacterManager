@@ -28,6 +28,7 @@ public class LightArmour implements Armour {
         return weight;
     }
 
+    @Override
     public String getName() {
         return name;
     }
