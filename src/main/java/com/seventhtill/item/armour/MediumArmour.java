@@ -34,6 +34,7 @@ public class MediumArmour implements Armour {
         return weight;
     }
 
+    @Override
     public String getName() {
         return name;
     }

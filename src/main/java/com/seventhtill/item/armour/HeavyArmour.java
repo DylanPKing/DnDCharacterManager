@@ -34,6 +34,7 @@ public class HeavyArmour implements Armour {
         return weight;
     }
 
+    @Override
     public String getName() {
         return name;
     }

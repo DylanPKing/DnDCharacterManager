@@ -31,6 +31,7 @@ public class Shield implements Armour {
         return weight;
     }
 
+    @Override
     public String getName() {
         return name;
     }

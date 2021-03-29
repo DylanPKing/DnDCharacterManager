@@ -59,6 +59,18 @@ public class ArmourComposite implements Armour {
         return totalWeight;
     }
 
+    @Override
+    public String getName() {
+        String names = "";
+
+        for (Armour armour :
+                armourCollection) {
+            names = names.concat(armour.getName() + ", ");
+        }
+
+        return names.substring(0, names.length() - 2);
+    }
+
     public void add(Armour armour) {
         armourCollection.add(armour);
     }
