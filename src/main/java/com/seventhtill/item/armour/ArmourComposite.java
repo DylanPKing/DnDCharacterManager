@@ -63,8 +63,7 @@ public class ArmourComposite implements Armour {
     public String getName() {
         String names = "";
 
-        for (Armour armour :
-                armourCollection) {
+        for (Armour armour : armourCollection) {
             names = names.concat(armour.getName() + ", ");
         }
 
