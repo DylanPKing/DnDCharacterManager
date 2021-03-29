@@ -15,7 +15,7 @@ public class CharacterRaceCreationMenu {
 
     // Race selection main screen
     public int createCharacterName(Scanner scanner) {
-        int input = 0;
+        int input;
         boolean raceSelected = false;
         while(!raceSelected) {
             System.out.println("Next, choose your race:\n" +

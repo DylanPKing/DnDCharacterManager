@@ -13,7 +13,7 @@ public class CharacterClassCreationMenu {
     }
 
     public  int createCharacterClass(Scanner scanner) {
-        int input = 0;
+        int input;
         boolean classSelected = false;
         while(!classSelected) {
             System.out.println("Now, choose your class:\n" +

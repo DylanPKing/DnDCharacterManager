@@ -2,7 +2,7 @@ package com.seventhtill.ui;
 
 // Command class implementing command
 public class BuildCli  implements Command {
-    private Cli ui;
+    private final Cli ui;
 
     // Constructor
     public BuildCli(Cli ui) {

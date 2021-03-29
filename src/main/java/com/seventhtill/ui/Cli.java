@@ -4,25 +4,13 @@ import com.seventhtill.characterSheet.CharacterBuilder;
 import com.seventhtill.characterSheet.CharacterDirector;
 import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
-import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.DnDClass;
-import com.seventhtill.dndclass.FactoryProducerClass;
-import com.seventhtill.dndclass.cleric.baseCleric;
-import com.seventhtill.dndclass.fighter.baseFighter;
-import com.seventhtill.dndclass.rogue.baseRogue;
 import com.seventhtill.dndclass.wizard.baseWizard;
 import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.armour.HeavyArmour;
 import com.seventhtill.item.weapon.*;
-import com.seventhtill.race.AbstractFactory;
-import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
@@ -64,7 +52,7 @@ public class Cli {
     public void run() {
         // Methods here should return -1 for cancel, 0 for error and 1 for success
         boolean running = true;
-        int input = 0;
+        int input;
         while(running) {
             input = mainMenu.mainMenu(scanner);
             switch (input) {
@@ -89,7 +77,7 @@ public class Cli {
 
     // The control hub for character creation
     private void characterCreationControl() {
-        int input = 0;
+        int input;
         boolean doneRace = false;
         boolean doneClass;
         boolean doneWeapon;
@@ -162,13 +150,23 @@ public class Cli {
 
         // Add the created properties to the built character
         // NOTE wizard has no armour
+        DnDCharacter character;
         if(characterClassCreationMenu.characterClass instanceof baseWizard) {
-            DnDCharacter character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
+            character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
                     this.characterAttributes, characterWeaponCreationMenu.characterWeapon, null);
         }
         else {
-            DnDCharacter character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
+            character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
                     this.characterAttributes, characterWeaponCreationMenu.characterWeapon, characterArmourCreationMenu.characterArmour);
+        }
+        // Testing the values
+        System.out.println(character.getCharacterName());
+        System.out.println(character.getCharacterRace());
+        System.out.println(character.getCharacterClass());
+        System.out.println(character.getCharacterAttributes());
+        System.out.println(character.getCharacterWeapon().getName());
+        if(!(character.getCharacterClass() instanceof baseWizard)) {
+            System.out.println(character.getCharacterArmour().getName());
         }
         // There will be a call to write to db here.
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
@@ -223,10 +221,5 @@ public class Cli {
     // Method that handles invalid input
     private void invalidInput() {
         System.out.println("That is not a valid input Dingus. Try following the instructions ya?\n");
-    }
-
-    // Custom error message
-    private void error(String errorMessage) {
-        System.out.print(errorMessage);
     }
 }

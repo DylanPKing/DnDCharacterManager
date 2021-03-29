@@ -5,8 +5,8 @@ import com.seventhtill.dndclass.cleric.baseCleric;
 import com.seventhtill.dndclass.fighter.baseFighter;
 import com.seventhtill.dndclass.rogue.baseRogue;
 import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.armour.LightArmour;
-import com.seventhtill.item.weapon.Weapon;
+import com.seventhtill.item.armour.ArmourComposite;
+import com.seventhtill.item.armour.Shield;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,27 +28,25 @@ public class CharacterArmourCreationMenu {
         LightArmourHelper lightArmourHelper = new LightArmourHelper();
         MediumArmourHelper mediumArmourHelper = new MediumArmourHelper();
         HeavyArmourHelper heavyArmourHelper = new HeavyArmourHelper();
-        ShieldHelper shieldHelper = new ShieldHelper();
         // Make lists for these
         ArrayList<Armour> lightArmour = lightArmourHelper.init();
         ArrayList<Armour> mediumArmour = mediumArmourHelper.init();
         ArrayList<Armour> heavyArmour = heavyArmourHelper.init();
-        ArrayList<Armour> shield = shieldHelper.init();
-        return armourSelectWindow(dndClass, lightArmour, mediumArmour, heavyArmour, shield, scanner);
+        return armourSelectWindow(dndClass, lightArmour, mediumArmour, heavyArmour, scanner);
     }
 
-    private int armourSelectWindow(DnDClass dndClass, ArrayList<Armour> light, ArrayList<Armour> medium, ArrayList<Armour> heavy, ArrayList<Armour> shield, Scanner scanner) {
+    private int armourSelectWindow(DnDClass dndClass, ArrayList<Armour> light, ArrayList<Armour> medium, ArrayList<Armour> heavy, Scanner scanner) {
         String text = "Now, select your starting armour.\n";
         if(dndClass instanceof baseCleric) {
             List<Armour> clericArmour = Stream.of(light, medium).flatMap(Collection::stream).collect(Collectors.toList());
-            return displayWindow(clericArmour, text, scanner);
+            return displayWindow(dndClass, clericArmour, text, scanner);
         }
         else if(dndClass instanceof baseFighter) {
             List<Armour> fighterArmour = Stream.of(light, medium, heavy).flatMap(Collection::stream).collect(Collectors.toList());
-            return displayWindow(fighterArmour, text, scanner);
+            return displayWindow(dndClass, fighterArmour, text, scanner);
         }
         else if(dndClass instanceof baseRogue) {
-            return displayWindow(light, text, scanner);
+            return displayWindow(dndClass, light, text, scanner);
         }
         else {
             // Do nothing since wizard dont get armour
@@ -56,7 +54,7 @@ public class CharacterArmourCreationMenu {
         }
     }
 
-    private int displayWindow(List<Armour> armourList, String text, Scanner scanner) {
+    private int displayWindow(DnDClass dndClass, List<Armour> armourList, String text, Scanner scanner) {
         System.out.println(text);
         int control = 0;
         for(Armour armour : armourList) {
@@ -70,7 +68,7 @@ public class CharacterArmourCreationMenu {
         Pattern pattern = Pattern.compile("[^0123456789]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(userInput);
         if (matcher.find() || userInput.equals("")) {
-            error("This is not a valid input, try again...\n");
+            error();
             return 0;
         }
         if(userInput.equals(String.valueOf(control + 1))) {
@@ -82,12 +80,51 @@ public class CharacterArmourCreationMenu {
                 characterArmour = armourList.get(i);
             }
         }
-        // If I get this far it means all went well
-        return 1;
+        // Check for shield
+        while(true){
+            if(dndClass instanceof baseCleric) {
+                System.out.println("Since you're a cleric, you can take a shield with you.\nWould you like to take one?\n" +
+                        "1) Yes.\n" +
+                        "2) No.");
+                userInput = scanner.nextLine();
+                switch (userInput) {
+                    case "1":
+                        ArmourComposite armourInventory = new ArmourComposite();
+                        armourInventory.add(characterArmour);
+                        armourInventory.add(new Shield());
+                        characterArmour = armourInventory;
+                        return 1;
+                    case "2":
+                        return 1;
+                    case "":
+                    default:
+                        error();
+                }
+            }
+            else if(dndClass instanceof baseFighter) {
+                System.out.println("Since you're a fighter, you can take a shield with you.\nWould you like to take one?\n" +
+                        "1) Yes.\n" +
+                        "2) No.");
+                userInput = scanner.nextLine();
+                switch (userInput) {
+                    case "1":
+                        ArmourComposite armourInventory = new ArmourComposite();
+                        armourInventory.add(characterArmour);
+                        armourInventory.add(new Shield());
+                        characterArmour = armourInventory;
+                        return 1;
+                    case "2":
+                        return 1;
+                    case "":
+                    default:
+                        error();
+                }
+            }
+        }
     }
 
     // Custom error message
-    private void error(String errorMessage) {
-        System.out.print(errorMessage);
+    private void error() {
+        System.out.print("This is not a valid input, try again...\n");
     }
 }

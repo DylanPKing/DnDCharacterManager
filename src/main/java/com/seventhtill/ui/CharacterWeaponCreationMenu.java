@@ -98,7 +98,7 @@ public class CharacterWeaponCreationMenu {
         Pattern pattern = Pattern.compile("[^0123456789]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(userInput);
         if (matcher.find() || userInput.equals("")) {
-            error("This is not a valid input, try again...\n");
+            error();
             return 0;
         }
 
@@ -116,7 +116,7 @@ public class CharacterWeaponCreationMenu {
     }
 
     // Custom error message
-    private void error(String errorMessage) {
-        System.out.print(errorMessage);
+    private void error() {
+        System.out.print("This is not a valid input, try again...\n");
     }
 }

@@ -6,6 +6,7 @@ import com.seventhtill.item.weapon.MeleeWeaponAttack;
 import com.seventhtill.item.weapon.Weapon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MartialMeleeWeaponHelper {
@@ -106,11 +107,7 @@ public class MartialMeleeWeaponHelper {
 
     // Method to assemble any number of properties and return a list
     private List<String> propertiesAssembler(String... properties) {
-        List<String> listOfProperties = new ArrayList<>();
-        for(String property : properties) {
-            listOfProperties.add(property);
-        }
-        return listOfProperties;
+        return new ArrayList<>(Arrays.asList(properties));
     }
 
     // Builder method to assemble into a weapon
