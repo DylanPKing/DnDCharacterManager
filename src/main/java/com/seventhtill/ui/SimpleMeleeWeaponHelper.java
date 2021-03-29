@@ -30,53 +30,34 @@ public class SimpleMeleeWeaponHelper {
 
         // Create Club
         properties = propertiesAssembler("Light");
-        simpleMeleeWeapons.add(build("Club", 4,
-                DamageType.BLUDGEONING, 2, properties));
+        simpleMeleeWeapons.add(build("Club", 4, DamageType.BLUDGEONING, 2, properties));
         // Create Dagger
-        properties = propertiesAssembler("Finesse", "Light",
-                "Thrown (range 20/60)");
-        simpleMeleeWeapons.add(build("Dagger",
-                4, DamageType.PIERCING, 1,
-                properties));
+        properties = propertiesAssembler("Finesse", "Light", "Thrown (range 20/60)");
+        simpleMeleeWeapons.add(build("Dagger", 4, DamageType.PIERCING, 1, properties));
         // Create Greatclub
         properties = propertiesAssembler("Two-handed");
-        simpleMeleeWeapons.add(build("Greatclub",
-                8, DamageType.BLUDGEONING,
-                10, properties));
+        simpleMeleeWeapons.add(build("Greatclub", 8, DamageType.BLUDGEONING, 10, properties));
         // Create Handaxe
-        properties = propertiesAssembler("Light",
-                "Thrown (range 20/60)");
-        simpleMeleeWeapons.add(build("Handaxe",
-                6, DamageType.SLASHING,
-                2, properties));
+        properties = propertiesAssembler("Light", "Thrown (range 20/60)");
+        simpleMeleeWeapons.add(build("Handaxe", 6, DamageType.SLASHING, 2, properties));
         // Create Javelin
         properties = propertiesAssembler("Thrown (range 30/120)");
-        simpleMeleeWeapons.add(build("Javelin", 6,
-                DamageType.PIERCING, 2, properties));
+        simpleMeleeWeapons.add(build("Javelin", 6, DamageType.PIERCING, 2, properties));
         // Create Light hammer
-        properties = propertiesAssembler("Light",
-                "Thrown (range 20/60)");
-        simpleMeleeWeapons.add(build("Light hammer",
-                4, DamageType.BLUDGEONING,
-                2, properties));
+        properties = propertiesAssembler("Light", "Thrown (range 20/60)");
+        simpleMeleeWeapons.add(build("Light hammer", 4, DamageType.BLUDGEONING, 2, properties));
         // Create Mace
         properties = new ArrayList<>();
-        simpleMeleeWeapons.add(build("Mace", 6
-                , DamageType.BLUDGEONING, 4, properties));
+        simpleMeleeWeapons.add(build("Mace", 6, DamageType.BLUDGEONING, 4, properties));
         // Create Quarterstaff
         properties = propertiesAssembler("Versatile (1d8)");
-        simpleMeleeWeapons.add(build("Quarterstaff",
-                6, DamageType.BLUDGEONING,
-                4, properties));
+        simpleMeleeWeapons.add(build("Quarterstaff", 6, DamageType.BLUDGEONING, 4, properties));
         // Create Sickle
         properties = propertiesAssembler("Light");
-        simpleMeleeWeapons.add(build("Sickle", 4,
-                DamageType.SLASHING, 2, properties));
+        simpleMeleeWeapons.add(build("Sickle", 4, DamageType.SLASHING, 2, properties));
         // Create Spear
-        properties = propertiesAssembler("Thrown (range 20/60)",
-                "versatile (1d8)");
-        simpleMeleeWeapons.add(build("Spear", 6,
-                DamageType.PIERCING, 3, properties));
+        properties = propertiesAssembler("Thrown (range 20/60)", "versatile (1d8)");
+        simpleMeleeWeapons.add(build("Spear", 6, DamageType.PIERCING, 3, properties));
 
         return simpleMeleeWeapons;
     }
@@ -95,12 +76,10 @@ public class SimpleMeleeWeaponHelper {
                          DamageType damageType, int weight,
                          List<String> properties) {
         this.name = name;
-        this.attackType =
-                new MeleeWeaponAttack(damageDie, damageType);
+        this.attackType = new MeleeWeaponAttack(damageDie, damageType);
         this.weight = weight;
         this.properties = properties;
 
-        return new SimpleWeapon(this.attackType, this.weight,
-                this.name, this.properties);
+        return new SimpleWeapon(this.attackType, this.weight, this.name, this.properties);
     }
 }

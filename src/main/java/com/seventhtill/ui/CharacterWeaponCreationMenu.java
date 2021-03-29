@@ -85,7 +85,6 @@ public class CharacterWeaponCreationMenu {
     }
 
     private int displayWindow(List<Weapon> weapons, String text, Scanner scanner) {
-        boolean made = false;
         System.out.println(text);
         int control = 0;
         for(Weapon weapon : weapons) {

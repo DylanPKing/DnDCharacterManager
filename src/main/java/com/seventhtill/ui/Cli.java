@@ -10,6 +10,7 @@ import com.seventhtill.dndclass.FactoryProducerClass;
 import com.seventhtill.dndclass.cleric.baseCleric;
 import com.seventhtill.dndclass.fighter.baseFighter;
 import com.seventhtill.dndclass.rogue.baseRogue;
+import com.seventhtill.dndclass.wizard.baseWizard;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.armour.HeavyArmour;
 import com.seventhtill.item.weapon.*;
@@ -32,6 +33,8 @@ public class Cli {
     private CharacterRaceCreationMenu characterRaceCreationMenu;
     private CharacterClassCreationMenu characterClassCreationMenu;
     private CharacterWeaponCreationMenu characterWeaponCreationMenu;
+    private CharacterArmourCreationMenu characterArmourCreationMenu;
+    private HashMap<String, Integer> characterAttributes;
 
     // Constructor
     public Cli() {
@@ -53,6 +56,8 @@ public class Cli {
         this.characterRaceCreationMenu = new CharacterRaceCreationMenu();
         this.characterClassCreationMenu = new CharacterClassCreationMenu();
         this.characterWeaponCreationMenu = new CharacterWeaponCreationMenu();
+        this.characterArmourCreationMenu = new CharacterArmourCreationMenu();
+        this.characterAttributes = new HashMap<>();
     }
 
     // Loop for the ui
@@ -104,7 +109,7 @@ public class Cli {
             }
             doneClass = false;
             // We can set the attributes here since they are reliant on the race
-            HashMap<String, Integer> characterAttributes = createCharacterAttributes(characterRaceCreationMenu.characterRace);
+            this.characterAttributes = createCharacterAttributes(characterRaceCreationMenu.characterRace);
             while(!doneClass) {
                 input = characterClassCreationMenu.createCharacterClass(scanner);
                 switch (input) {
@@ -137,62 +142,55 @@ public class Cli {
                     }
                     doneArmour = false;
                     while(!doneArmour) {
-
+                        input = characterArmourCreationMenu.createCharacterArmour(characterClassCreationMenu.characterClass, scanner);
+                        switch (input) {
+                            case -1:
+                                doneWeapon =false;
+                                doneArmour = true;
+                                break;
+                            case 1:
+                                doneArmour = true;
+                                break;
+                        }
+                        if(!doneWeapon) {
+                            break;
+                        }
                     }
                 }
             }
-//            System.out.println(characterName);
-//            System.out.println(characterRaceCreationMenu.characterRace);
-//            System.out.println(characterClassCreationMenu.characterClass);
-//            System.out.println(characterWeaponCreationMenu.characterWeapon.getName());
         }
 
-//        // Add the created properties to the built character
-//        DnDCharacter character = invokeBuilder(
-//                characterName, characterRace, characterClass,
-//                characterAttributes);
-//        System.out.println(characterWeapon.getName());
-//        //EndCli();
-//
-////        System.out.println(character.getCharacterName());
-////        System.out.println(character.getCharacterRace());
-////        System.out.println(character.getCharacterClass());
-//        // There will be a call to write to db here.
-//
-//        // Then back to main menu
-//        mainMenu();
-        return;
+        // Add the created properties to the built character
+        // NOTE wizard has no armour
+        if(characterClassCreationMenu.characterClass instanceof baseWizard) {
+            DnDCharacter character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
+                    this.characterAttributes, characterWeaponCreationMenu.characterWeapon, null);
+        }
+        else {
+            DnDCharacter character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
+                    this.characterAttributes, characterWeaponCreationMenu.characterWeapon, characterArmourCreationMenu.characterArmour);
+        }
+        // There will be a call to write to db here.
+        // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
     }
-//
-//    // NOTE the builder hasn't been merged yet, so I'm making
-//    // NOTE a wild assumption that this will work once the builder is merged in
-//    // Method that invokes the builder to build the new character
-//    private DnDCharacter invokeBuilder(
-//            String name, Race race, DnDClass DndClass,
-//            HashMap<String, Integer> characterAttributes) {
-//        CharacterBuilder newCharacter = new CharacterSheet();
-//        CharacterDirector director = new CharacterDirector(newCharacter);
-//        director.makeCharacter();
-//
-//        DnDCharacter aNewCharacter = director.getCharacter();
-//
-//        // These are temporary fillers before the implementation of ui
-//        Armour armour = new HeavyArmour(20,"Platemail",
-//                false, 10);
-//        WeaponAttackType attacktype = null;
-//        List<String> properties = null;
-//        Weapon weapon = new SimpleWeapon(attacktype, 4,
-//                "Light Hammer", properties);
-//
-//        aNewCharacter.setCharacterName(name);
-//        aNewCharacter.setCharacterRace(race);
-//        aNewCharacter.setCharacterClass(DndClass);
-//        aNewCharacter.setCharacterAttributes(characterAttributes);
-//        aNewCharacter.setCharacterArmour(armour);
-//        aNewCharacter.setCharacterWeapon(weapon);
-//
-//        return aNewCharacter;
-//    }
+
+    // Method that invokes the builder to build the new character
+    private DnDCharacter invokeBuilder(String name, Race race, DnDClass DndClass, HashMap<String, Integer> characterAttributes, Weapon weapon, Armour armour) {
+        CharacterBuilder newCharacter = new CharacterSheet();
+        CharacterDirector director = new CharacterDirector(newCharacter);
+        director.makeCharacter();
+
+        DnDCharacter aNewCharacter = director.getCharacter();
+
+        aNewCharacter.setCharacterName(name);
+        aNewCharacter.setCharacterRace(race);
+        aNewCharacter.setCharacterClass(DndClass);
+        aNewCharacter.setCharacterAttributes(characterAttributes);
+        aNewCharacter.setCharacterWeapon(weapon);
+        aNewCharacter.setCharacterArmour(armour);
+
+        return aNewCharacter;
+    }
 
     // Method to generate the starting attributes
     private HashMap<String, Integer> createCharacterAttributes(Race race) {
