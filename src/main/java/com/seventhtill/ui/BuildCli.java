@@ -12,6 +12,6 @@ public class BuildCli  implements Command {
     // The execute method knows about the presence of the ui member function
     // but doesn't know about the implementation
     public void execute() {
-        this.ui.mainMenu();
+        this.ui.run();
     }
 }
