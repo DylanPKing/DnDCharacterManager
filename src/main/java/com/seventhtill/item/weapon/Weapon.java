@@ -6,16 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Weapon implements Item {
+    private int id;
     protected WeaponAttackType attackType;
     private int weight;
     private String name;
-    private final List<String> properties;
+    private List<String> properties;
 
     public Weapon(WeaponAttackType attackType, int weight, String name, List<String> properties) {
         this.attackType = attackType;
         this.weight = weight;
         this.name = name;
         this.properties = properties;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
