@@ -48,8 +48,8 @@ public class DnDCharacter implements CharacterSheetPlan{
     public void setCharacterAttributes(HashMap<String, Integer> attributes) {
         this.attributes = attributes;
        // Race tempRace = getCharacterRace();
-        HashMap tempList = (HashMap) characterRace.getAbilityScoreIncrease();
-        tempList.forEach((key, value) -> attributes.put((String)key, attributes.get(key) + (int)value));
+//        HashMap tempList = (HashMap) characterRace.getAbilityScoreIncrease();
+//        tempList.forEach((key, value) -> attributes.put((String)key, attributes.get(key) + (int)value));
     }
 
     public Map getCharacterAttributes() {return attributes;}
