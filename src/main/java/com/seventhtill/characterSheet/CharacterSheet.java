@@ -1,7 +1,5 @@
 package com.seventhtill.characterSheet;
 
-import com.seventhtill.race.Race;
-
 import java.util.HashMap;
 
 public class CharacterSheet implements CharacterBuilder{

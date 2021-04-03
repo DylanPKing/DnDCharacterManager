@@ -1,22 +1,5 @@
 package com.seventhtill;
 
-import com.seventhtill.characterSheet.DnDCharacter;
-import com.seventhtill.characterSheet.CharacterBuilder;
-import com.seventhtill.characterSheet.CharacterDirector;
-import com.seventhtill.characterSheet.CharacterSheet;
-import com.seventhtill.dndclass.AbstractFactoryDndClass;
-import com.seventhtill.dndclass.FactoryProducerClass;
-import com.seventhtill.dndclass.DnDClass;
-import com.seventhtill.dndclass.cleric.Cleric;
-import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.armour.HeavyArmour;
-import com.seventhtill.item.weapon.SimpleWeapon;
-import com.seventhtill.item.weapon.Weapon;
-import com.seventhtill.item.weapon.WeaponAttackType;
-import com.seventhtill.race.AbstractFactory;
-import com.seventhtill.race.FactoryProducer;
-import com.seventhtill.race.Race;
-import com.seventhtill.race.elf.HighElf;
 import com.seventhtill.ui.BuildCli;
 import com.seventhtill.ui.Cli;
 import com.seventhtill.ui.CommandInvoker;

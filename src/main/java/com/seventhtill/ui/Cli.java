@@ -11,6 +11,8 @@ import com.seventhtill.item.weapon.*;
 import com.seventhtill.race.Race;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
@@ -66,9 +68,13 @@ public class Cli {
                     characterCreationControl();
                     break;
                 case 2:
+                    characterEditControl();
+                    break;
                 case 3:
+                    characterDeleteControl();
+                    break;
                 case 4:
-                    unavailable();
+                    showCharactersControl();
                     break;
             }
         }
@@ -86,7 +92,7 @@ public class Cli {
         // things like name, race, class etc.
         String characterName = characterNameCreationMenu.createCharacterName(scanner);
         while(!doneRace) {
-            input = characterRaceCreationMenu.createCharacterName(scanner);
+            input = characterRaceCreationMenu.createCharacterRace(scanner);
             switch (input) {
                 case -1:
                 case 0:
@@ -172,6 +178,146 @@ public class Cli {
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
     }
 
+    // A method that will control the flow for editing a character
+    private void characterEditControl() {
+        // TODO @chief needs to load all existing characters into a list
+        ArrayList<DnDCharacter> characters = new ArrayList<>();
+        int input = 0;
+        boolean done = false;
+        String userInput;
+        // TODO @chief load the characters list with characters from the db
+
+        // The main loop for the menu
+        while (!done) {
+            System.out.println("Pick a character to edit:");
+            for (int i = 0; i < characters.size(); i++) {
+                System.out.printf("%d) %s.\n", i + 1, characters.get(i).getCharacterName());
+            }
+            System.out.printf("%d) Cancel.\n", characters.size() + 1);
+
+            userInput = scanner.nextLine();
+            Pattern pattern = Pattern.compile("[^0123456789]", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(userInput);
+            if (matcher.find() || userInput.equals("")) {
+                error();
+                continue;
+            }
+            if (userInput.equals(String.valueOf(characters.size() + 1))) {
+                System.out.println("Cancelling and returning to previous menu\n");
+                return;
+            }
+            for (int i = 0; i < characters.size(); i++) {
+                if (userInput.equals(String.valueOf(i + 1))) {
+                    input = editMenu(characters.get(i));
+                }
+            }
+            switch (input) {
+                case -1:
+                    return;
+                case 1:
+                    done = true;
+            }
+        }
+        // TODO @chief the character needs to be updated in the db. Here or in the edit menu I'll let you decide on that. I'd say do it here though coz below might get messy.
+    }
+
+    // Control for character deletion
+    private void characterDeleteControl() {
+        String userInput;
+        boolean done = false;
+        ArrayList<DnDCharacter> characters = new ArrayList<>();
+        // TODO the list needs to be populated with the characters from db @chief
+        while(!done) {
+            System.out.println("Pick a character to delete:");
+            for (int i = 0; i < characters.size(); i++) {
+                System.out.printf("%d) %s.\n", i + 1, characters.get(i).getCharacterName());
+            }
+            System.out.printf("%d) Cancel.\n", characters.size() + 1);
+
+            userInput = scanner.nextLine();
+            Pattern pattern = Pattern.compile("[^0123456789]", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(userInput);
+            if (matcher.find() || userInput.equals("")) {
+                error();
+                continue;
+            }
+            if (userInput.equals(String.valueOf(characters.size() + 1))) {
+                System.out.println("Cancelling and returning to previous menu\n");
+                return;
+            }
+            for (int i = 0; i < characters.size(); i++) {
+                if (userInput.equals(String.valueOf(i + 1))) {
+                    // TODO delete the character that is at characters.get(i) @chief
+                    done = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Print a list of all characters in bd
+    private void showCharactersControl() {
+        ArrayList<DnDCharacter> characters = new ArrayList<>();
+        // TODO @chief load the list with db characters
+        for(DnDCharacter character : characters) {
+            System.out.println(character.getCharacterName() + ", " +
+                    character.getCharacterRace() + ", " +
+                    character.getCharacterClass() + ", " +
+                    character.getCharacterAttributes() + ", " +
+                    character.getCharacterWeapon() + ", " +
+                    character.getCharacterArmour());
+        }
+        System.out.println("Hit enter to return to the main menu");
+        scanner.nextLine();
+    }
+
+    // The menu for editing a stat
+    private int editMenu(DnDCharacter character) {
+        boolean done = false;
+        int input = 0;
+        while (!done) {
+            System.out.println("Pick a trait to edit:\n" +
+                    "1) Name.\n" +
+                    "2) Race.\n" +
+                    "3) Class.\n" +
+                    "3) Weapon.\n" +
+                    "4) Armour.\n" +
+                    "5 Cancel.\n");
+            String userInput = scanner.nextLine();
+            switch (userInput) {
+                case "1":
+                    characterNameCreationMenu.createCharacterName(scanner);
+                    //TODO like here after the attribute is changed.
+                    break;
+                case "2":
+                    input  = characterRaceCreationMenu.createCharacterRace(scanner);
+                    break;
+                case "3":
+                    input  = characterClassCreationMenu.createCharacterClass(scanner);
+                    break;
+                case "4":
+                    input  = characterWeaponCreationMenu.createCharacterWeapon(character.getCharacterClass(), scanner);
+                    break;
+                case "5":
+                    System.out.println("Returning to previous menu");
+                    return 0;
+                default:
+                    error();
+                    break;
+            }
+            switch (input) {
+                case 1:
+                    done = true;
+                    break;
+                case 0:
+                    error();
+                    break;
+            }
+        }
+        // If here then the attribute was changed successfully.
+        return 1;
+    }
+
     // Method that invokes the builder to build the new character
     private DnDCharacter invokeBuilder(String name, Race race, DnDClass DndClass, HashMap<String, Integer> characterAttributes, Weapon weapon, Armour armour) {
         CharacterBuilder newCharacter = new CharacterSheet();
@@ -213,13 +359,13 @@ public class Cli {
         return  characterAttributes;
     }
 
-    // Temp method while implementing functionality
-    private void unavailable() {
-        System.out.println("Sorry this feature is not yet available");
-    }
-
     // Method that handles invalid input
     private void invalidInput() {
         System.out.println("That is not a valid input Dingus. Try following the instructions ya?\n");
+    }
+
+    // Custom error message
+    private void error() {
+        System.out.print("This is not a valid input, try again...\n");
     }
 }
