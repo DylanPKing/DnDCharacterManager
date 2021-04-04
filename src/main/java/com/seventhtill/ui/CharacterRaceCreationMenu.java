@@ -14,7 +14,7 @@ public class CharacterRaceCreationMenu {
     }
 
     // Race selection main screen
-    public int createCharacterName(Scanner scanner) {
+    public int createCharacterRace(Scanner scanner) {
         int input;
         boolean raceSelected = false;
         while(!raceSelected) {
