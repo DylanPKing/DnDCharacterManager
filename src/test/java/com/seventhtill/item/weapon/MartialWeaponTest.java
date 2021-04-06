@@ -19,7 +19,7 @@ class MartialWeaponTest {
 
         String actualName = testWeapon.getName();
 
-        assert expectedName.equals(actualName);
+        assertEquals(actualName, expectedName);
     }
 
     @Test
@@ -31,7 +31,7 @@ class MartialWeaponTest {
 
         int actualWeight = testWeapon.getWeight();
 
-        assert expectedWeight == actualWeight;
+        assertEquals(expectedWeight, actualWeight);
     }
 
     @Test
@@ -45,8 +45,8 @@ class MartialWeaponTest {
 
         List<String> actualProperties = testWeapon.getProperties();
 
-        assert expectedProperties.equals(actualProperties);
-        assert expectedProperties != actualProperties;
+        assertEquals(actualProperties, expectedProperties);
+        assertNotSame(expectedProperties, actualProperties);
 
     }
 
@@ -60,7 +60,7 @@ class MartialWeaponTest {
         testWeapon.setName(expectedName);
         String actualName = testWeapon.getName();
 
-        assert expectedName.equals(actualName);
+        assertEquals(actualName, expectedName);
     }
 
     @Test
@@ -73,6 +73,6 @@ class MartialWeaponTest {
         testWeapon.setWeight(expectedWeight);
         int actualWeight = testWeapon.getWeight();
 
-        assert expectedWeight == actualWeight;
+        assertEquals(expectedWeight, actualWeight);
     }
 }

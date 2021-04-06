@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class SimpleWeaponTest {
 
     @Test
@@ -17,7 +19,7 @@ class SimpleWeaponTest {
 
         String actualName = testWeapon.getName();
 
-        assert expectedName.equals(actualName);
+        assertEquals(actualName, expectedName);
     }
 
     @Test
@@ -29,7 +31,7 @@ class SimpleWeaponTest {
 
         int actualWeight = testWeapon.getWeight();
 
-        assert expectedWeight == actualWeight;
+        assertEquals(expectedWeight, actualWeight);
     }
 
     @Test
@@ -43,9 +45,8 @@ class SimpleWeaponTest {
 
         List<String> actualProperties = testWeapon.getProperties();
 
-        assert expectedProperties.equals(actualProperties);
-        assert expectedProperties != actualProperties;
-
+        assertEquals(actualProperties, expectedProperties);
+        assertNotSame(expectedProperties, actualProperties);
     }
 
     @Test
@@ -58,7 +59,7 @@ class SimpleWeaponTest {
         testWeapon.setName(expectedName);
         String actualName = testWeapon.getName();
 
-        assert expectedName.equals(actualName);
+        assertEquals(actualName, expectedName);
     }
 
     @Test
@@ -71,6 +72,6 @@ class SimpleWeaponTest {
         testWeapon.setWeight(expectedWeight);
         int actualWeight = testWeapon.getWeight();
 
-        assert expectedWeight == actualWeight;
+        assertEquals(expectedWeight, actualWeight);
     }
 }
