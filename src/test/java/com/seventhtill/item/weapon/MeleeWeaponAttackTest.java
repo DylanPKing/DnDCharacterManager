@@ -13,7 +13,7 @@ class MeleeWeaponAttackTest {
 
         int actualValue = testAttackType.getDamageDie();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -23,6 +23,6 @@ class MeleeWeaponAttackTest {
 
         DamageType actualValue = testAttackType.getDamageType();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 }

@@ -23,7 +23,7 @@ class ArmourCompositeTest {
 
         int actualValue = testArmourComposite.getArmourClassModifier(testDexModifier);
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -32,7 +32,7 @@ class ArmourCompositeTest {
 
         int actualValue = testArmourComposite.getBaseArmour();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -41,7 +41,7 @@ class ArmourCompositeTest {
 
         boolean actualValue = testArmourComposite.isDisadvantage();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -50,6 +50,6 @@ class ArmourCompositeTest {
 
         int actualValue = testArmourComposite.getWeight();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 }

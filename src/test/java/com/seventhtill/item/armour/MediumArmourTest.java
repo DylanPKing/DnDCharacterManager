@@ -16,7 +16,7 @@ class MediumArmourTest {
 
         int actualValue = testArmour.getArmourClassModifier(testDexModifier);
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -29,7 +29,7 @@ class MediumArmourTest {
 
         int actualValue = testArmour.getArmourClassModifier(testDexModifier);
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -41,7 +41,7 @@ class MediumArmourTest {
 
         int actualValue = testArmour.getBaseArmour();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -52,7 +52,7 @@ class MediumArmourTest {
 
         boolean actualValue = testArmour.isDisadvantage();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -63,7 +63,7 @@ class MediumArmourTest {
 
         int actualValue = testArmour.getWeight();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -74,6 +74,6 @@ class MediumArmourTest {
 
         String actualValue = testArmour.getName();
 
-        assert expectedValue.equals(actualValue);
+        assertEquals(actualValue, expectedValue);
     }
 }
