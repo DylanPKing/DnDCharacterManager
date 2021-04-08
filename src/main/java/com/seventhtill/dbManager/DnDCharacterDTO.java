@@ -22,13 +22,13 @@ public class DnDCharacterDTO {
     private Weapon characterWeapon;
     private Armour characterArmour;
     //Add armour
-    private int armourId;
+    //private int armourId;
     private int baseArmour;
     private String armourName;
     private boolean disadvantage;
     private int armourWeight;
     //Add weapon
-    private int weaponId;
+    //private int weaponId;
     private WeaponAttackType attackType;
     private int weaponWeight;
     private String weaponName;
@@ -36,19 +36,19 @@ public class DnDCharacterDTO {
     private int damageDie;
     private DamageType damageType;
 
-    DnDCharacterDTO(String characterName, Race characterRace, DnDClass characterClass, Item characterItem, Weapon characterWeapon, Armour characterArmour, int armourId, int baseArmour, String armourName, boolean disadvantage, int armourWeight, int weaponId, WeaponAttackType attackType, int weaponWeight, String weaponName, List<String> properties, int damageDie, DamageType damageType) {
+    DnDCharacterDTO(String characterName, Race characterRace, DnDClass characterClass, Item characterItem, Weapon characterWeapon, Armour characterArmour, int baseArmour, String armourName, boolean disadvantage, int armourWeight, WeaponAttackType attackType, int weaponWeight, String weaponName, List<String> properties, int damageDie, DamageType damageType) {
         this.characterName = characterName;
         this.characterRace = characterRace;
         this.characterClass = characterClass;
         this.characterItem = characterItem;
         this.characterWeapon = characterWeapon;
         this.characterArmour = characterArmour;
-        this.armourId = armourId;
+        //this.armourId = armourId;
         this.baseArmour = baseArmour;
         this.armourName = armourName;
         this.disadvantage = disadvantage;
         this.armourWeight = armourWeight;
-        this.weaponId = weaponId;
+        //this.weaponId = weaponId;
         this.attackType = attackType;
         this.weaponWeight = weaponWeight;
         this.weaponName = weaponName;
@@ -116,13 +116,13 @@ public class DnDCharacterDTO {
         return characterArmour;
     }
 
-    public int getArmourId() {
-        return armourId;
-    }
+    //public int getArmourId() {
+       // return armourId;
+    //}
 
-    public void setArmourId(int armourId) {
-        this.armourId = armourId;
-    }
+    //public void setArmourId(int armourId) {
+        //this.armourId = armourId;
+    //}
 
     public int getBaseArmour() {
         return baseArmour;
@@ -156,13 +156,13 @@ public class DnDCharacterDTO {
         this.armourWeight = armourWeight;
     }
 
-    public int getWeaponId() {
-        return weaponId;
-    }
+    //public int getWeaponId() {
+       // return weaponId;
+    //}
 
-    public void setWeaponId(int weaponId) {
-        this.weaponId = weaponId;
-    }
+    //public void setWeaponId(int weaponId) {
+       // this.weaponId = weaponId;
+    //}
 
     public WeaponAttackType getAttackType() {
         return attackType;
