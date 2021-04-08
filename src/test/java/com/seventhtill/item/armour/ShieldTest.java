@@ -14,7 +14,7 @@ class ShieldTest {
 
         int actualValue = testShield.getArmourClassModifier(0);
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -25,7 +25,7 @@ class ShieldTest {
 
         int actualValue = testShield.getBaseArmour();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -36,7 +36,7 @@ class ShieldTest {
 
         boolean actualValue = testShield.isDisadvantage();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -47,7 +47,7 @@ class ShieldTest {
 
         int actualValue = testShield.getWeight();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -58,6 +58,6 @@ class ShieldTest {
 
         String actualValue = testShield.getName();
 
-        assert expectedValue.equals(actualValue);
+        assertEquals(actualValue, expectedValue);
     }
 }

@@ -14,7 +14,7 @@ class RangedWeaponAttackTest {
 
         int actualValue = testAttackType.getDamageDie();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -24,6 +24,6 @@ class RangedWeaponAttackTest {
 
         DamageType actualValue = testAttackType.getDamageType();
 
-        assert expectedValue == actualValue;
+        assertEquals(expectedValue, actualValue);
     }
 }
