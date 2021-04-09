@@ -36,7 +36,7 @@ public class DnDCharacterDTO {
     private int damageDie;
     private DamageType damageType;
 
-    DnDCharacterDTO(String characterName, Race characterRace, DnDClass characterClass, Item characterItem, Weapon characterWeapon, Armour characterArmour, int baseArmour, String armourName, boolean disadvantage, int armourWeight, WeaponAttackType attackType, int weaponWeight, String weaponName, List<String> properties, int damageDie, DamageType damageType) {
+    public DnDCharacterDTO(String characterName, Race characterRace, DnDClass characterClass, Item characterItem, Weapon characterWeapon, Armour characterArmour, int baseArmour, String armourName, boolean disadvantage, int armourWeight, WeaponAttackType attackType, int weaponWeight, String weaponName, List<String> properties, int damageDie, DamageType damageType) {
         this.characterName = characterName;
         this.characterRace = characterRace;
         this.characterClass = characterClass;

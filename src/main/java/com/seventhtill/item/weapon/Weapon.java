@@ -35,6 +35,11 @@ public abstract class Weapon implements Item {
         return new ArrayList<>(properties);
     }
 
+    //added for DTO
+    public WeaponAttackType getAttackType() {
+        return attackType;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

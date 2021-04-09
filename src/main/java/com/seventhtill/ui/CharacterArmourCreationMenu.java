@@ -99,6 +99,7 @@ public class CharacterArmourCreationMenu {
                     case "":
                     default:
                         error();
+                        continue;
                 }
             }
             else if(dndClass instanceof baseFighter) {
@@ -118,8 +119,10 @@ public class CharacterArmourCreationMenu {
                     case "":
                     default:
                         error();
+                        continue;
                 }
             }
+            return 1;
         }
     }
 
