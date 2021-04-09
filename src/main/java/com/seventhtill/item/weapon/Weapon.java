@@ -1,5 +1,6 @@
 package com.seventhtill.item.weapon;
 
+import com.seventhtill.dbManager.DnDCharacterDTO;
 import com.seventhtill.item.Item;
 
 import java.util.ArrayList;
@@ -35,6 +36,11 @@ public abstract class Weapon implements Item {
         return new ArrayList<>(properties);
     }
 
+    //added for DTO
+    public WeaponAttackType getAttackType() {
+        return attackType;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -42,4 +48,5 @@ public abstract class Weapon implements Item {
     public void setWeight(int weight) {
         this.weight = weight;
     }
+
 }
