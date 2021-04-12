@@ -6,6 +6,9 @@ import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.wizard.baseWizard;
+import com.seventhtill.interceptor.CharacterContext;
+import com.seventhtill.interceptor.CharacterCreateInterceptor;
+import com.seventhtill.interceptor.Dispatcher;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.weapon.*;
 import com.seventhtill.race.Race;
@@ -17,6 +20,7 @@ import java.util.regex.Pattern;
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
 public class Cli {
+    private Dispatcher dispatcher;
     private Scanner scanner;
     private MainMenu mainMenu;
     private CharacterNameCreationMenu characterNameCreationMenu;
@@ -40,6 +44,7 @@ public class Cli {
 
     // Method to initialise the scanner and get it ready to read input
     private void initCli() {
+        this.dispatcher = new Dispatcher();
         this.scanner = new Scanner(System.in);
         this.mainMenu = new MainMenu();
         this.characterNameCreationMenu = new CharacterNameCreationMenu();
@@ -88,6 +93,8 @@ public class Cli {
         boolean doneClass;
         boolean doneWeapon;
         boolean doneArmour;
+        CharacterCreateInterceptor interceptor = new CharacterCreateInterceptor();
+        dispatcher.dispatchCharacterCreateInterceptor();
         // This method will call multiple methods asking for the user to specify
         // things like name, race, class etc.
         String characterName = characterNameCreationMenu.createCharacterName(scanner);
@@ -165,15 +172,9 @@ public class Cli {
             character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
                     this.characterAttributes, characterWeaponCreationMenu.characterWeapon, characterArmourCreationMenu.characterArmour);
         }
-        // Testing the values
-        System.out.println(character.getCharacterName());
-        System.out.println(character.getCharacterRace());
-        System.out.println(character.getCharacterClass());
-        System.out.println(character.getCharacterAttributes());
-        System.out.println(character.getCharacterWeapon().getName());
-        if(!(character.getCharacterClass() instanceof baseWizard)) {
-            System.out.println(character.getCharacterArmour().getName());
-        }
+        CharacterContext contextChar = new CharacterContext(character);
+        dispatcher.dispatchCharacterCreateCompleteInterceptor(contextChar);
+
         // There will be a call to write to db here.
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
     }

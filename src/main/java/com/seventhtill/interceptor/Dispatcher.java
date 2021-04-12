@@ -12,13 +12,24 @@ public class Dispatcher {
     public void removeInterceptor() {
     }
 
-    public void dispatchCharacterCreateInterceptor(Character context) {
+    public void dispatchCharacterCreateInterceptor() {
         ArrayList<Interceptor> interceptors = new ArrayList<>(this.interceptors);
 
         for (Interceptor interceptor : interceptors) {
             if (interceptor instanceof CharacterCreateInterceptor) {
                 CharacterCreateInterceptor charIntercept = (CharacterCreateInterceptor) interceptor;
-                charIntercept.onBeginning(context);
+                charIntercept.onBeginning();
+            }
+        }
+    }
+
+    public void dispatchCharacterCreateCompleteInterceptor(CharacterContext context) {
+        ArrayList<Interceptor> interceptors = new ArrayList<>(this.interceptors);
+
+        for (Interceptor interceptor : interceptors) {
+            if (interceptor instanceof CharacterCreateInterceptor) {
+                CharacterCreateInterceptor charIntercept = (CharacterCreateInterceptor) interceptor;
+                charIntercept.onEnd(context);
             }
         }
     }
