@@ -16,7 +16,7 @@ public class MartialRangedWeaponHelper {
     private int weight;
 
     // Constructor
-    MartialRangedWeaponHelper() {
+    public MartialRangedWeaponHelper() {
         this.properties = new ArrayList<>();
         this.attackType = null;
         this.name = "";

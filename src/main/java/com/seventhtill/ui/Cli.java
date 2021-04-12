@@ -5,6 +5,7 @@ import com.seventhtill.characterSheet.CharacterDirector;
 import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
 import com.seventhtill.dbManager.DnDCharacterDTO;
+import com.seventhtill.dbManager.Queries;
 import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.FactoryProducerClass;
@@ -193,100 +194,21 @@ public class Cli {
         // There will be a call to write to db here.
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
         DnDCharacterDTO aDnDCharacterDTO = new DnDCharacterDTO(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterItem(), character.getCharacterWeapon(), character.getCharacterArmour(), character.getCharacterArmour().getBaseArmour(), character.getCharacterArmour().getName(), character.getCharacterArmour().isDisadvantage(), character.getCharacterArmour().getWeight(), character.getCharacterWeapon().getAttackType(), character.getCharacterWeapon().getWeight(), character.getCharacterWeapon().getName(), character.getCharacterWeapon().getProperties(), character.getCharacterWeapon().getAttackType().getDamageDie(), character.getCharacterWeapon().getAttackType().getDamageType());
-        addArmour(aDnDCharacterDTO);
-        addWeapon(aDnDCharacterDTO);
-        addDnDCharacter(aDnDCharacterDTO);
+        Queries.addArmour(aDnDCharacterDTO);
+        Queries.addWeapon(aDnDCharacterDTO);
+        Queries.addDnDCharacter(aDnDCharacterDTO);
     }
 
     // A method that will control the flow for editing a character
     private void characterEditControl() {
-        boolean list = true;
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
         //invoke builder for character
         CharacterBuilder newCharacter = new CharacterSheet();
         CharacterDirector characterDirector = new CharacterDirector(newCharacter);
         characterDirector.makeCharacter();
         //objects to be filled
         DnDCharacter aNewCharacter = characterDirector.getCharacter();
-        //variables for each component
-        String characterName, characterRace, characterClass, characterWeapon, characterArmour;
-        ArmourComposite tempArmour = null;
-        Weapon tempWeapon = null;
-
-        //Weapon helpers
-        SimpleMeleeWeaponHelper simpleMeleeHelper = new SimpleMeleeWeaponHelper();
-        SimpleRangedWeaponHelper simpleRangedHelper = new SimpleRangedWeaponHelper();
-        MartialMeleeWeaponHelper martialMeleeHelper = new MartialMeleeWeaponHelper();
-        MartialRangedWeaponHelper martialRangedHelper = new MartialRangedWeaponHelper();
-        // First set up arrays of each type of weapon
-        ArrayList<Weapon> simpleMeleeWeapons = simpleMeleeHelper.init();
-        ArrayList<Weapon> simpleRangedWeapons = simpleRangedHelper.init();
-        ArrayList<Weapon> martialMeleeWeapons = martialMeleeHelper.init();
-        ArrayList<Weapon> martialRangedWeapons = martialRangedHelper.init();
-        //Armour helpers
-        LightArmourHelper lightArmourHelper = new LightArmourHelper();
-        MediumArmourHelper mediumArmourHelper = new MediumArmourHelper();
-        HeavyArmourHelper heavyArmourHelper = new HeavyArmourHelper();
-        // Make lists for these
-        ArrayList<Armour> lightArmour = lightArmourHelper.init();
-        ArrayList<Armour> mediumArmour = mediumArmourHelper.init();
-        ArrayList<Armour> heavyArmour = heavyArmourHelper.init();
-
-        //Iterate for as many characters that exist
-        while(list) {
-            // TODO @chief needs to load all existing characters into a list
-            //query db and split results
-            String retrievedQuery = retrieveDnDCharacter();
-            String[] characterParts = retrievedQuery.split(System.lineSeparator());
-
-            //Order of db known, assign strings values then rewrite array and repeat
-            characterName = characterParts[0];
-            characterRace = characterParts[1];
-            characterClass = characterParts[2];
-            characterWeapon = characterParts[3];
-            characterArmour = characterParts[4];
-
-            //Split for factory to work correctly
-            String[] characterRaceSplit = characterRace.split(" ");
-            AbstractFactory raceFactory = FactoryProducer.getFactory(characterRaceSplit[0]); //first index
-            Race aRace = raceFactory.getRace(characterRace); //entire string
-            // TODO @chief fkn figure it out
-            AbstractFactoryDndClass classFactory = FactoryProducerClass.getFactory(characterClass);
-            DnDClass aClass = classFactory.getDndClass(characterClass);
-
-            //Add whatever weapon we read
-            ArrayList<Weapon> weaponList = (ArrayList<Weapon>) Stream.of(simpleMeleeWeapons, simpleRangedWeapons, martialMeleeWeapons, martialRangedWeapons).flatMap(Collection::stream).collect(Collectors.toList());
-            for (Weapon weapon : weaponList) {
-                if (characterWeapon.contains(weapon.getName())) {
-                    tempWeapon = weapon;
-                    break;
-                }
-            }
-            //Add whatever armour we read
-            ArrayList<Armour> armourList = (ArrayList<Armour>) Stream.of(lightArmour, mediumArmour, heavyArmour).flatMap(Collection::stream).collect(Collectors.toList());
-            armourList.add(new Shield());
-            for (Armour armour : armourList) {
-                if (characterArmour.contains(armour.getName())) {
-                    tempArmour.add(armour);
-                }
-            }
-
-            //Create object
-            aNewCharacter.setCharacterName(characterName);
-            aNewCharacter.setCharacterRace(aRace);
-            aNewCharacter.setCharacterClass(aClass);
-            aNewCharacter.setCharacterWeapon(tempWeapon);
-            aNewCharacter.setCharacterArmour(tempArmour);
-
-            int index = 0;
-            arraycopy(characterParts, index + 1, characterParts, index, characterParts.length - index - 1);
-            if (characterParts.length == 5)
-                list = false;
-            characters.add(aNewCharacter);
-        }
-        //characters.add(aNewCharacter);
-        //TODO might not add last character come back here to fix
-
         int input = 0;
         boolean done = false;
         String userInput;
@@ -327,9 +249,17 @@ public class Cli {
 
     // Control for character deletion
     private void characterDeleteControl() {
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
+        //invoke builder for character
+        CharacterBuilder newCharacter = new CharacterSheet();
+        CharacterDirector characterDirector = new CharacterDirector(newCharacter);
+        characterDirector.makeCharacter();
+        //objects to be filled
+        DnDCharacter aNewCharacter = characterDirector.getCharacter();
+
         String userInput;
         boolean done = false;
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
         // TODO the list needs to be populated with the characters from db @chief
         while(!done) {
             System.out.println("Pick a character to delete:");
@@ -353,6 +283,7 @@ public class Cli {
                 if (userInput.equals(String.valueOf(i + 1))) {
                     String name = characters.get(i).getCharacterName();
                     deleteDnDCharacter(name);
+                    //TODO: delete relevant armours and weapons
                     done = true;
                     break;
                 }
@@ -362,8 +293,15 @@ public class Cli {
 
     // Print a list of all characters in bd
     private void showCharactersControl() {
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
-        // TODO @chief load the list with db characters
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
+        //invoke builder for character
+        CharacterBuilder newCharacter = new CharacterSheet();
+        CharacterDirector characterDirector = new CharacterDirector(newCharacter);
+        characterDirector.makeCharacter();
+        //objects to be filled
+        DnDCharacter aNewCharacter = characterDirector.getCharacter();
+
         for(DnDCharacter character : characters) {
             System.out.println(character.getCharacterName() + ", " +
                     character.getCharacterRace() + ", " +

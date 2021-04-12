@@ -16,7 +16,7 @@ public class MartialMeleeWeaponHelper {
     private int weight;
 
     // Constructor
-    MartialMeleeWeaponHelper() {
+    public MartialMeleeWeaponHelper() {
         this.properties = new ArrayList<>();
         this.attackType = null;
         this.name = "";

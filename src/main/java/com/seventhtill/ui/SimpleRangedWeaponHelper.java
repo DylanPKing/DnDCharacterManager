@@ -16,7 +16,7 @@ public class SimpleRangedWeaponHelper {
     private int weight;
 
     // Constructor
-    SimpleRangedWeaponHelper() {
+    public SimpleRangedWeaponHelper() {
         this.properties = new ArrayList<>();
         this.attackType = null;
         this.name = "";

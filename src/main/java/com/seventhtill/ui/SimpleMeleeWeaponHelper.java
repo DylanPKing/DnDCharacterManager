@@ -17,7 +17,7 @@ public class SimpleMeleeWeaponHelper {
     private int weight;
 
     // Constructor
-    SimpleMeleeWeaponHelper() {
+    public SimpleMeleeWeaponHelper() {
         this.properties = new ArrayList<>();
         this.attackType = null;
         this.name = "";

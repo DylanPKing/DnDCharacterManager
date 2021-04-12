@@ -6,7 +6,7 @@ import com.seventhtill.item.armour.HeavyArmour;
 import java.util.ArrayList;
 
 public class HeavyArmourHelper {
-    HeavyArmourHelper() {
+    public HeavyArmourHelper() {
 
     }
 
