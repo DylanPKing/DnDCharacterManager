@@ -17,8 +17,6 @@ import com.seventhtill.race.AbstractFactory;
 import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
 import com.seventhtill.ui.*;
-
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,8 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Queries {
-    public static int armourRow = 0;
-    public static int weaponRow = 0;
     /**
      * Connect to the database
      * @return the Connection object
@@ -46,8 +42,7 @@ public class Queries {
     }
 
     //Add an armour to the armour db
-    public static void addArmour(DnDCharacterDTO DnDCharacterDTO) {
-        armourRow = 0;
+    public static int addArmour(DnDCharacterDTO DnDCharacterDTO) {
         String name = DnDCharacterDTO.getArmourName();
         boolean adv = DnDCharacterDTO.isDisadvantage();
         int baseArm = DnDCharacterDTO.getBaseArmour();
@@ -66,26 +61,30 @@ public class Queries {
         }
 
         //get the index of the row
-        sql = "SELECT * FROM armour";
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+        int armourRow = 0;
+        sql = "SELECT id FROM armour WHERE name = ? and disadvantage = ? and baseArmour = ? and weight = ?";
 
-            // loop through the result set
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            pstmt.setBoolean(2, adv);
+            pstmt.setInt(3, baseArm);
+            pstmt.setInt(4,weight);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                armourRow ++;
+                armourRow = rs.getInt("id");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-
         System.out.println("Added a character's Armour! " + "Armour index: " + armourRow);
+        return armourRow;
     }
 
     //Add a weapon to the weapon db
-    public static void addWeapon(DnDCharacterDTO DnDCharacterDTO) {
-        weaponRow = 0;
+    public static int addWeapon(DnDCharacterDTO DnDCharacterDTO) {
+        int weaponRow = 0;
         int weight = DnDCharacterDTO.getArmourWeight();
         List<String> properties = DnDCharacterDTO.getProperties();
 
@@ -111,30 +110,32 @@ public class Queries {
         }
 
         //get the index of the row
-        sql = "SELECT * FROM weapon";
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+        sql = "SELECT id FROM weapon WHERE weight = ? and properties = ? and damageDie = ? and damageType = ? and name = ?";
 
-            // loop through the result set
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,weight);
+            pstmt.setString(2,  listOfProperties);
+            pstmt.setInt(3, dmgDie);
+            pstmt.setObject(4, dmgType);
+            pstmt.setString(5, name);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                weaponRow ++;
+                weaponRow = rs.getInt("id");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         System.out.println("Added a character's weapon! " + "Weapon index: " + weaponRow);
+        return weaponRow;
     }
 
     //Add a DnD Character to the dndcharacter db
-    public static void addDnDCharacter(DnDCharacterDTO DnDCharacterDTO) {
+    public static void addDnDCharacter(DnDCharacterDTO DnDCharacterDTO, int armourId, int weaponId) {
         String name = DnDCharacterDTO.getCharacterName();
         Race aRace = DnDCharacterDTO.getCharacterRace();
         DnDClass aClass = DnDCharacterDTO.getCharacterClass();
-        int weaponID, armourID; //TODO deal with these ids increments
-        weaponID = weaponRow;
-        armourID = armourRow;
 
         String sql = "INSERT INTO dndcharacter (characterName, characterRace, characterClass, characterWeapon, characterArmour) VALUES(?,?,?,?,?)";
 
@@ -143,8 +144,8 @@ public class Queries {
             pstmt.setString(1,name);
             pstmt.setObject(2, aRace);
             pstmt.setObject(3, aClass);
-            pstmt.setInt(4, weaponID);
-            pstmt.setInt(5, armourID);
+            pstmt.setInt(4, weaponId);
+            pstmt.setInt(5, armourId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -197,7 +198,7 @@ public class Queries {
                 DnDClass aClass = classFactory.getDndClass(characterClass);
 
                 tempArmour = getCharacterArmour(anArmour);
-                tempWeapon = getCharacterWeapon(aWeapon);
+                tempWeapon = getCharacterWeapon();
 
                 //Create object
                 aCharacter.setCharacterName(characterName);
@@ -211,11 +212,10 @@ public class Queries {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("I am found child");
         return characters;
     }
 
-    public static Weapon getCharacterWeapon(int weaponId) {
+    public static Weapon getCharacterWeapon() {
         //Weapon helpers
         SimpleMeleeWeaponHelper simpleMeleeHelper = new SimpleMeleeWeaponHelper();
         SimpleRangedWeaponHelper simpleRangedHelper = new SimpleRangedWeaponHelper();
@@ -229,9 +229,8 @@ public class Queries {
 
         Weapon aWeapon = null;
         String weaponName;
-        int weight, damageDie, damageType;
-        //properties blob deal with later
-        String sql = "SELECT * FROM dndcharacter WHERE characterWeapon = " + weaponId;
+        int weaponId, weight, damageDie, damageType;
+        String sql = "SELECT * FROM dndcharacter WHERE characterWeapon = ?";
 
         try (Connection conn = connect();
              Statement stmt  = conn.createStatement();
@@ -239,6 +238,7 @@ public class Queries {
 
             // loop through the result set
             while (rs.next()) {
+                weaponId = rs.getInt("id");
                 weaponName = rs.getString("name");
                 weight = rs.getInt("weight");
                 damageDie =  rs.getInt("damageDie");
@@ -260,7 +260,7 @@ public class Queries {
         return aWeapon;
     }
 
-    public static ArmourComposite getCharacterArmour(int armourId) {
+    public static ArmourComposite getCharacterArmour(int id) {
         //Armour helpers
         LightArmourHelper lightArmourHelper = new LightArmourHelper();
         MediumArmourHelper mediumArmourHelper = new MediumArmourHelper();
@@ -273,14 +273,16 @@ public class Queries {
         ArmourComposite anArmour = null;
         String armourName;
         int armourAdvantage, armourBase, armourWeight;
-        String sql = "SELECT * FROM dndcharacter WHERE characterArmour = " + armourId;
+        String sql = "SELECT * FROM dndcharacter WHERE characterArmour = ?";
 
         try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
+             PreparedStatement pstmt  = conn.prepareStatement(sql);
+             ResultSet rs    = pstmt.executeQuery(sql)){
+
 
             // loop through the result set
             while (rs.next()) {
+
                 armourName = rs.getString("name");
                 armourAdvantage = rs.getInt("disadvantage");
                 armourBase = rs.getInt("baseArmour");
@@ -301,73 +303,8 @@ public class Queries {
 
         return anArmour;
     }
-    //TODO: change
-    //Update weapon based on it's id
-    public static String updateWeapon(Weapon weapon, WeaponAttackType attackType, int id) {
-        return "UPDATE weapon set weapon.name = " + weapon.getName() +
-                ", weapon.weight = " + weapon.getWeight() +
-                ", weapon.properties = " + weapon.getProperties() +
-                ", weapon.damageType = " + attackType.getDamageType() +
-                ", weapon.damageDie = " + attackType.getDamageDie() +
-                ", WHERE weapon.id = " + id;
-    }
-    //TODO: change
-    //Update armour based on it's id
-    public static String updateArmour(Armour armour) {
-        return "UPDATE armour set armour.name = " + armour.getName() +
-                ", armour.weight = " + armour.getWeight() +
-                ",armour.baseArmour = " + armour.getBaseArmour() +
-                ",armour.disadvantage = " + armour.isDisadvantage() +
-                ", WHERE armour.id = ";
-    }
-    //TODO: change
-    //Update a DnDCharacter based on it's original name.
-    public static String updateDnDCharacter(String name, DnDCharacter newDnDCharacter) {
-        return "UPDATE dndcharacter set dndcharacter.characterName = " + newDnDCharacter.getCharacterName() +
-                ", dndcharacter.characterRace = " + newDnDCharacter.getCharacterRace() +
-                ", dndcharacter.characterClass = " + newDnDCharacter.getCharacterClass() +
-                ",dndcharacter.characterWeapon = " + newDnDCharacter.getCharacterWeapon() +
-                ",dndcharacter.characterArmour = " + newDnDCharacter.getCharacterArmour() +
-                ", WHERE dndcharacter.characterName = " + name;
-    }
 
-    public static int getCharacterArmourId() {
-        int armourId = 0;
-        String sql = "SELECT armour.id from armour where armour.id in (select characterArmour from dndcharacter)";
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                armourId = rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return armourId;
-    }
-
-    public static int getCharacterWeaponId() {
-        int weaponId = 0;
-        String sql = "SELECT weapon.id from weapon where weapon.id in (select characterWeapon from dndcharacter)";
-        try (Connection conn = connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
-            // loop through the result set
-            while (rs.next()) {
-                weaponId = rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return weaponId;
-    }
-
-    public static void deleteDnDCharacter(String characterName) {
-        deleteArmour();
-        deleteWeapon();
+    public static void deleteDnDCharacter(String characterName, int weaponId, int armourId) {
         String sql = "DELETE from dndcharacter WHERE characterName = ?";
 
         try (Connection conn = connect();
@@ -381,16 +318,18 @@ public class Queries {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        deleteArmour(armourId);
+        deleteWeapon(weaponId);
     }
 
-    public static void deleteWeapon() {
-        int id = getCharacterWeaponId();
-        String sql = "DELETE from weapon WHERE id = ?";
+    public static void deleteWeapon(int id) {
+        String sql = "DELETE from weapon WHERE weapon.id = ?";
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            pstmt.setInt(1, id);
+            pstmt.setInt(1,id);
             // execute the delete statement
             pstmt.executeUpdate();
 
@@ -399,14 +338,13 @@ public class Queries {
         }
     }
 
-    public static void deleteArmour() {
-        int id = getCharacterArmourId();
-        String sql = "DELETE from armour WHERE id = ?";
+    public static void deleteArmour(int id) {
+        String sql = "DELETE from armour WHERE armour.id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            pstmt.setInt(1, id);
+            pstmt.setInt(1,id);
             // execute the delete statement
             pstmt.executeUpdate();
 
@@ -414,4 +352,88 @@ public class Queries {
             System.out.println(e.getMessage());
         }
     }
+
+    //Update weapon based on it's id
+    public static void updateWeapon(int weight, List<String> list, int dmgDie, DamageType dmgType, String name, int id) {
+
+        List<String> properties = list;
+        String listOfProperties = "";
+        for(String property : properties) {
+            listOfProperties += property + ", ";
+        }
+
+        String sql = "UPDATE weapon set weight = ?, "
+                + "properties = ?,"
+                + "damageDie = ?,"
+                + "damageType = ?,"
+                + "name = ?"
+                +"where id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setInt(1, weight);
+            pstmt.setString(2, listOfProperties);
+            pstmt.setInt(3, dmgDie);
+            pstmt.setObject(4, dmgType);
+            pstmt.setString(5, name);
+            pstmt.setInt(6, id);
+            // update
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Update armour based on it's id
+    public static void updateArmour(String name, boolean disadvantage, int baseArmour, int weight, int id) {
+        String sql = "UPDATE armour set name = ?, "
+                + "disadvantage = ?,"
+                + "baseArmour = ?,"
+                + "weight = ?"
+                +"where id = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, name);
+            pstmt.setBoolean(2, disadvantage);
+            pstmt.setInt(3, baseArmour);
+            pstmt.setInt(4, weight);
+            pstmt.setInt(5, id);
+            // update
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Update a DnDCharacter based on it's original name.
+    public static void updateDnDCharacter(String newName, Race newRace, DnDClass newClass, int newWeaponId, int newArmourId, String oldName) {
+        String sql = "UPDATE dndcharacter set characterName = ?, "
+                + "characterRace = ?,"
+                + "characterClass = ?,"
+                + "characterWeapon = ?,"
+                + "characterArmour = ?"
+                +"where characterName = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, newName);
+            pstmt.setObject(2, newRace);
+            pstmt.setObject(3, newClass);
+            pstmt.setInt(4, newWeaponId);
+            pstmt.setInt(5, newArmourId);
+            pstmt.setString(6, oldName);
+            // update
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

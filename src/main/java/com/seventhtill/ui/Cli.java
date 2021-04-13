@@ -6,30 +6,20 @@ import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
 import com.seventhtill.dbManager.DnDCharacterDTO;
 import com.seventhtill.dbManager.Queries;
-import com.seventhtill.dndclass.AbstractFactoryDndClass;
 import com.seventhtill.dndclass.DnDClass;
-import com.seventhtill.dndclass.FactoryProducerClass;
 import com.seventhtill.dndclass.wizard.baseWizard;
 import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.armour.ArmourComposite;
-import com.seventhtill.item.armour.Shield;
 import com.seventhtill.item.weapon.*;
-import com.seventhtill.race.AbstractFactory;
-import com.seventhtill.race.FactoryProducer;
 import com.seventhtill.race.Race;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static com.seventhtill.dbManager.Queries.*;
-import static java.lang.System.arraycopy;
 
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
 public class Cli {
+    public static int armourId, weaponId;
     private Scanner scanner;
     private MainMenu mainMenu;
     private CharacterNameCreationMenu characterNameCreationMenu;
@@ -194,9 +184,9 @@ public class Cli {
         // There will be a call to write to db here.
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
         DnDCharacterDTO aDnDCharacterDTO = new DnDCharacterDTO(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterItem(), character.getCharacterWeapon(), character.getCharacterArmour(), character.getCharacterArmour().getBaseArmour(), character.getCharacterArmour().getName(), character.getCharacterArmour().isDisadvantage(), character.getCharacterArmour().getWeight(), character.getCharacterWeapon().getAttackType(), character.getCharacterWeapon().getWeight(), character.getCharacterWeapon().getName(), character.getCharacterWeapon().getProperties(), character.getCharacterWeapon().getAttackType().getDamageDie(), character.getCharacterWeapon().getAttackType().getDamageType());
-        Queries.addArmour(aDnDCharacterDTO);
-        Queries.addWeapon(aDnDCharacterDTO);
-        Queries.addDnDCharacter(aDnDCharacterDTO);
+        armourId = Queries.addArmour(aDnDCharacterDTO);
+        weaponId = Queries.addWeapon(aDnDCharacterDTO);
+        Queries.addDnDCharacter(aDnDCharacterDTO, armourId, weaponId);
     }
 
     // A method that will control the flow for editing a character
@@ -282,8 +272,7 @@ public class Cli {
             for (int i = 0; i < characters.size(); i++) {
                 if (userInput.equals(String.valueOf(i + 1))) {
                     String name = characters.get(i).getCharacterName();
-                    deleteDnDCharacter(name);
-                    //TODO: delete relevant armours and weapons
+                    deleteDnDCharacter(name, weaponId, armourId );
                     done = true;
                     break;
                 }
@@ -357,7 +346,7 @@ public class Cli {
             }
         }
         //update db with new character
-        updateDnDCharacter(updateCharacterName ,character);
+        updateDnDCharacter(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterWeapon().getId(), character.getCharacterArmour().getId(), character.getCharacterName());
         // If here then the attribute was changed successfully.
         return 1;
     }
