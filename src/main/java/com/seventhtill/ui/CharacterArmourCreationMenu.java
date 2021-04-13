@@ -120,7 +120,12 @@ public class CharacterArmourCreationMenu {
                         error();
                 }
             }
+            // All other classes dont get a shield
+            else {
+                break;
+            }
         }
+        return 1;
     }
 
     // Custom error message
