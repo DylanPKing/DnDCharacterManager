@@ -52,7 +52,7 @@ public class DnDCharacter implements CharacterSheetPlan{
 //        tempList.forEach((key, value) -> attributes.put((String)key, attributes.get(key) + (int)value));
     }
 
-    public Map<String, Integer> getCharacterAttributes() {return attributes;}
+    public HashMap<String, Integer> getCharacterAttributes() {return (HashMap) attributes;}
 
     @Override
     public void setCharacterItems(Item item) {

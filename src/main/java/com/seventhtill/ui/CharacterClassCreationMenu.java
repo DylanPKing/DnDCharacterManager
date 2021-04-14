@@ -30,6 +30,8 @@ public class CharacterClassCreationMenu {
                 case 1:
                     classSelected = true;
                     break;
+                default:
+                    break;
             }
         }
         return 1;

@@ -11,7 +11,7 @@ public abstract class Dwarf implements Race {
     private ArrayList<String> languages;
 
     // Constructor for a base dwarf
-    public Dwarf() {
+    protected Dwarf() {
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
