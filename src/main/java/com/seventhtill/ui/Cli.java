@@ -94,6 +94,7 @@ public class Cli {
         boolean doneWeapon;
         boolean doneArmour;
         CharacterCreateInterceptor interceptor = new CharacterCreateInterceptor();
+        dispatcher.registerInterceptor(interceptor);
         dispatcher.dispatchCharacterCreateInterceptor();
         // This method will call multiple methods asking for the user to specify
         // things like name, race, class etc.
@@ -174,6 +175,7 @@ public class Cli {
         }
         CharacterContext contextChar = new CharacterContext(character);
         dispatcher.dispatchCharacterCreateCompleteInterceptor(contextChar);
+        dispatcher.removeInterceptor(interceptor);
 
         // There will be a call to write to db here.
         // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
