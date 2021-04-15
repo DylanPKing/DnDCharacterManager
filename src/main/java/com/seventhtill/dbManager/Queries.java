@@ -175,12 +175,12 @@ public class Queries {
                 characterClass =  rs.getString("characterClass");
                 aWeapon = rs.getInt("characterWeapon");
                 anArmour = rs.getInt("characterArmour");
-                aStrength = rs.getInt("strength");
+                /*aStrength = rs.getInt("strength");
                 aConstitution = rs.getInt("constitution");
                 aDexterity = rs.getInt("dexterity");
                 anIntelligence = rs.getInt("intelligence");
                 aWisdom = rs.getInt("wisdom");
-                aCharisma =  rs.getInt("charisma");
+                aCharisma =  rs.getInt("charisma");*/
 
                 //invoke builder for character
                 CharacterBuilder newCharacter = new CharacterSheet();
@@ -249,7 +249,7 @@ public class Queries {
 
     public static int getCharacterArmourId(String name, Race aRace, DnDClass aClass) {
         int armourId = 0;
-        String sql = "SELECT characterArmour FROM dndcharacter where characterName LIKE ? ";//and dndcharacter.characterRace = ? and dndcharacter.characterClass = ?";
+        String sql = "SELECT characterArmour FROM dndcharacter where characterName = ? and dndcharacter.characterRace = ? and dndcharacter.characterClass = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -275,7 +275,7 @@ public class Queries {
         return armourId;
     }
 
-    public static Weapon getCharacterWeapon(int id) {
+    private static Weapon getCharacterWeapon(int id) {
         //Weapon helpers
         SimpleMeleeWeaponHelper simpleMeleeHelper = new SimpleMeleeWeaponHelper();
         SimpleRangedWeaponHelper simpleRangedHelper = new SimpleRangedWeaponHelper();
@@ -310,17 +310,12 @@ public class Queries {
                 for (Weapon weapon : weaponList) {
                     System.out.println("Weapon name " + weapon.getName() + " Weapon weight: " + weapon.getWeight() + " Weapon properties: " + weapon.getProperties() + " Weapon attacktype: " + weapon.getAttackType());
                     if (weaponName.contains(weapon.getName())) {
-                        if (weapon instanceof MartialWeapon) {
-                            aWeapon = new MartialWeapon(weapon.getAttackType(), weapon.getWeight(), weapon.getName(), weapon.getProperties());
-                        } else if (weapon instanceof SimpleWeapon) {
-                            aWeapon = new SimpleWeapon(weapon.getAttackType(), weapon.getWeight(), weapon.getName(), weapon.getProperties());
-                        } else {
-                            System.out.println("It didn't work, be sad you have no weapon");
-                        }
-                        System.out.println("Name: " + weapon.getName() + " Weight: " + weapon.getWeight() + " Properties: " + weapon.getProperties() + " Weapon Attack Type: " + weapon.getAttackType());
+                        aWeapon = weapon;
+                        System.out.println("Hello fren: " + aWeapon.getName());
                     }
-                    break;
+                    System.out.println("Name: " + weapon.getName() + " Weight: " + weapon.getWeight() + " Properties: " + weapon.getProperties() + " Weapon Attack Type: " + weapon.getAttackType());
                 }
+                break;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -330,7 +325,7 @@ public class Queries {
 
 
 
-    public static ArmourComposite getCharacterArmour(int id) {
+    private static ArmourComposite getCharacterArmour(int id) {
         //Armour helpers
         LightArmourHelper lightArmourHelper = new LightArmourHelper();
         MediumArmourHelper mediumArmourHelper = new MediumArmourHelper();
@@ -359,9 +354,9 @@ public class Queries {
             // loop through the result set
             while (rs.next()) {
                 armourName = rs.getString("name");
-                armourAdvantage = rs.getInt("disadvantage");
+                /*armourAdvantage = rs.getInt("disadvantage");
                 armourBase = rs.getInt("baseArmour");
-                armourWeight = rs.getInt("weight");
+                armourWeight = rs.getInt("weight");*/
 
                 //Add whatever armour we read
                 ArrayList<Armour> armourList = (ArrayList<Armour>) Stream.of(lightArmour, mediumArmour, heavyArmour).flatMap(Collection::stream).collect(Collectors.toList());
@@ -398,7 +393,7 @@ public class Queries {
         deleteWeapon(weaponId);
     }
 
-    public static void deleteWeapon(int id) {
+    private static void deleteWeapon(int id) {
         String sql = "DELETE from weapon WHERE weapon.id = ?";
         try (Connection conn = connect();
               PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -413,7 +408,7 @@ public class Queries {
         }
     }
 
-    public static void deleteArmour(int id) {
+    private static void deleteArmour(int id) {
         String sql = "DELETE from armour WHERE armour.id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -431,9 +426,8 @@ public class Queries {
     //Update weapon based on it's id
     public static void updateWeapon(int weight, List<String> list, int dmgDie, DamageType dmgType, String name, int id) {
 
-        List<String> properties = list;
         String listOfProperties = "";
-        for(String property : properties) {
+        for(String property : list) {
             listOfProperties += property + ", ";
         }
 
@@ -485,36 +479,6 @@ public class Queries {
         }
     }
 
-    //Update a DnDCharacter based on it's original name.
-    public static void updateDnDCharacter(String newName, Race newRace, DnDClass newClass, int newWeaponId, int newArmourId, String oldName, DnDClass oldClass, Race oldRace) {
-        String sql = "UPDATE dndcharacter set characterName = ?, "
-                + "characterRace = ?,"
-                + "characterClass = ?,"
-                + "characterWeapon = ?,"
-                + "characterArmour = ?"
-                +"where characterName = ?"
-                + "and characterClass = ?"
-                + "and characterRace = ?";
-
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            // set the corresponding param
-            pstmt.setString(1, newName);
-            pstmt.setObject(2, newRace);
-            pstmt.setObject(3, newClass);
-            pstmt.setInt(4, newWeaponId);
-            pstmt.setInt(5, newArmourId);
-            pstmt.setString(6, oldName);
-            pstmt.setObject(7,oldClass);
-            pstmt.setObject(8, oldRace);
-            // update
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public static void updateDnDCharacterName(String newName, String oldName, Race oldRace, DnDClass oldClass) {
         String sql = "UPDATE dndcharacter set characterName = ? "
                 +"where characterName = ?"
@@ -527,10 +491,11 @@ public class Queries {
             // set the corresponding param
             pstmt.setString(1, newName);
             pstmt.setString(2, oldName);
-            pstmt.setObject(3,oldClass);
-            pstmt.setObject(4, oldRace);
+            pstmt.setString(3,oldClass.getName());
+            pstmt.setString(4, oldRace.getName());
             // update
             pstmt.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -548,10 +513,33 @@ public class Queries {
             // set the corresponding param
             pstmt.setObject(1, newRace);
             pstmt.setString(2, oldName);
-            pstmt.setObject(3,oldClass);
-            pstmt.setObject(4, oldRace);
+            pstmt.setString(3,oldClass.getName());
+            pstmt.setString(4, oldRace.getName());
             // update
             pstmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void updateDnDCharacterClass(DnDClass newClass, String oldName, Race oldRace, DnDClass oldClass) {
+        String sql = "UPDATE dndcharacter set characterClass = ? "
+                +"where characterName = ?"
+                + "and characterClass = ?"
+                + "and characterRace = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setObject(1, newClass);
+            pstmt.setString(2, oldName);
+            pstmt.setString(3,oldClass.getName());
+            pstmt.setString(4, oldRace.getName());
+            // update
+            pstmt.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
