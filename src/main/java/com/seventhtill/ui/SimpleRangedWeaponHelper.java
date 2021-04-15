@@ -25,26 +25,26 @@ public class SimpleRangedWeaponHelper {
 
     public ArrayList<Weapon> init() {
         ArrayList<Weapon> simpleRangedWeapons = new ArrayList<>();
-        List<String> properties;
+        List<String> propertiesList;
 
         // Create Crossbow, light
-        properties = propertiesAssembler("Ammunition (range 80/320)",
+        propertiesList = propertiesAssembler("Ammunition (range 80/320)",
                 "Loading", "Two-handed");
         simpleRangedWeapons.add(build("Crossbow, light", 8,
-                DamageType.PIERCING, 5, properties));
+                DamageType.PIERCING, 5, propertiesList));
         // Create Dart
-        properties = propertiesAssembler("Finesse", "Thrown (range 20/60)");
+        propertiesList = propertiesAssembler("Finesse", "Thrown (range 20/60)");
         simpleRangedWeapons.add(build("Dart", 4,
-                DamageType.PIERCING, /*0.25*/1 , properties));
+                DamageType.PIERCING, /*0.25*/1 , propertiesList));
         // Create Shortbow
-        properties = propertiesAssembler("Ammunition (range 80/320)",
+        propertiesList = propertiesAssembler("Ammunition (range 80/320)",
                 "Two-handed");
         simpleRangedWeapons.add(build("Shortbow", 6,
-                DamageType.PIERCING, 2 , properties));
+                DamageType.PIERCING, 2 , propertiesList));
         // Create Sling
-        properties = propertiesAssembler("Ammunition (range 30/120)");
+        propertiesList = propertiesAssembler("Ammunition (range 30/120)");
         simpleRangedWeapons.add(build("Sling", 4,
-                DamageType.BLUDGEONING, 0 , properties));
+                DamageType.BLUDGEONING, 0 , propertiesList));
         return  simpleRangedWeapons;
     }
 

@@ -32,6 +32,8 @@ public class CharacterRaceCreationMenu {
                 case 1:
                     raceSelected = true;
                     break;
+                default:
+                    break;
             }
         }
         return 1;

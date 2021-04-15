@@ -8,6 +8,9 @@ import com.seventhtill.dbManager.DnDCharacterDTO;
 import com.seventhtill.dbManager.Queries;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.wizard.baseWizard;
+import com.seventhtill.interceptor.CharacterContext;
+import com.seventhtill.interceptor.CharacterCreateInterceptor;
+import com.seventhtill.interceptor.Dispatcher;
 import com.seventhtill.item.armour.Armour;
 import com.seventhtill.item.armour.ArmourComposite;
 import com.seventhtill.item.weapon.Weapon;
@@ -26,6 +29,7 @@ public class Cli {
     private static String oldName;
     private static Race oldRace;
     private static DnDClass oldClass;
+    private Dispatcher dispatcher;
     private Scanner scanner;
     private MainMenu mainMenu;
     private CharacterNameCreationMenu characterNameCreationMenu;
@@ -52,6 +56,7 @@ public class Cli {
 
     // Method to initialise the scanner and get it ready to read input
     private void initCli() {
+        this.dispatcher = new Dispatcher();
         this.scanner = new Scanner(System.in);
         this.mainMenu = new MainMenu();
         this.characterNameCreationMenu = new CharacterNameCreationMenu();
@@ -73,9 +78,6 @@ public class Cli {
                 case -1:
                     running = false;
                     break;
-                case 0:
-                    invalidInput();
-                    break;
                 case 1:
                     characterCreationControl();
                     break;
@@ -87,6 +89,10 @@ public class Cli {
                     break;
                 case 4:
                     showCharactersControl();
+                    break;
+                case 0:
+                default:
+                    invalidInput();
                     break;
             }
         }
@@ -100,6 +106,9 @@ public class Cli {
         boolean doneClass;
         boolean doneWeapon;
         boolean doneArmour;
+        CharacterCreateInterceptor interceptor = new CharacterCreateInterceptor();
+        dispatcher.registerInterceptor(interceptor);
+        dispatcher.dispatchCharacterCreateInterceptor();
         // This method will call multiple methods asking for the user to specify
         // things like name, race, class etc.
         String characterName = characterNameCreationMenu.createCharacterName(scanner);
@@ -107,12 +116,13 @@ public class Cli {
         while(!doneRace) {
             input = characterRaceCreationMenu.createCharacterRace(scanner);
             switch (input) {
-                case -1:
-                case 0:
-                    return;
                 case 1:
                     doneRace = true;
                     break;
+                case -1:
+                case 0:
+                default:
+                    return;
             }
             doneClass = false;
             // We can set the attributes here since they are reliant on the race
@@ -126,6 +136,8 @@ public class Cli {
                         break;
                     case 1:
                         doneClass = true;
+                        break;
+                    default:
                         break;
                 }
                 // Control to allow to go back a step
@@ -143,6 +155,8 @@ public class Cli {
                         case 1:
                             doneWeapon = true;
                             break;
+                        default:
+                            break;
                     }
                     if(!doneClass) {
                         break;
@@ -157,6 +171,8 @@ public class Cli {
                                 break;
                             case 1:
                                 doneArmour = true;
+                                break;
+                            default:
                                 break;
                         }
                         if(!doneWeapon) {
@@ -178,20 +194,15 @@ public class Cli {
             character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
                     this.characterAttributes, characterWeaponCreationMenu.characterWeapon, characterArmourCreationMenu.characterArmour);
         }
-        // Testing the values
-        System.out.println(character.getCharacterName());
-        System.out.println(character.getCharacterRace());
-        System.out.println(character.getCharacterClass());
-        System.out.println(character.getCharacterAttributes());
-        System.out.println(character.getCharacterWeapon().getName());
-        if(!(character.getCharacterClass() instanceof baseWizard)) {
-            System.out.println(character.getCharacterArmour().getName());
-        }
         //call to write to db here.
         DnDCharacterDTO aDnDCharacterDTO = new DnDCharacterDTO(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterItem(), character.getCharacterWeapon(), character.getCharacterArmour(), character.getCharacterArmour().getBaseArmour(), character.getCharacterArmour().getName(), character.getCharacterArmour().isDisadvantage(), character.getCharacterArmour().getWeight(), character.getCharacterWeapon().getAttackType(), character.getCharacterWeapon().getWeight(), character.getCharacterWeapon().getName(), character.getCharacterWeapon().getProperties(), character.getCharacterWeapon().getAttackType().getDamageDie(), character.getCharacterWeapon().getAttackType().getDamageType());
         armourId = Queries.addArmour(aDnDCharacterDTO);
         weaponId = Queries.addWeapon(aDnDCharacterDTO);
         Queries.addDnDCharacter(aDnDCharacterDTO, armourId, weaponId);
+
+        CharacterContext contextChar = new CharacterContext(character);
+        dispatcher.dispatchCharacterCreateCompleteInterceptor(contextChar);
+        dispatcher.removeInterceptor(interceptor);
     }
 
     // A method that will control the flow for editing a character
@@ -243,6 +254,8 @@ public class Cli {
                     return;
                 case 1:
                     done = true;
+                default:
+                    break;
             }
         }
         //newChar
@@ -318,12 +331,11 @@ public class Cli {
                     characterNameCreationMenu.createCharacterName(scanner);
                     updateDnDCharacterName(character.getCharacterName(), oldName, oldRace, oldClass);
                     System.out.println(character.getCharacterName());
-                    System.out.println("Hi I got here");
+                    input = 1;
                     break;
                 case "2":
                     input  = characterRaceCreationMenu.createCharacterRace(scanner);
                     updateDnDCharacterRace(character.getCharacterRace(), oldName, oldRace, oldClass);
-                    System.out.println("I got here race bro");
                     System.out.println("New Race: " + character.getCharacterRace() + "Old Race: " + oldRace);
                     break;
                 case "3":
@@ -345,6 +357,7 @@ public class Cli {
                     done = true;
                     break;
                 case 0:
+                default:
                     error();
                     break;
             }

@@ -14,6 +14,7 @@ public class MartialMeleeWeaponHelper {
     private MeleeWeaponAttack attackType;
     private String name;
     private int weight;
+    private final String heavy = "Heavy";
 
     // Constructor
     public MartialMeleeWeaponHelper() {
@@ -26,82 +27,82 @@ public class MartialMeleeWeaponHelper {
     // The main creating function
     public ArrayList<Weapon> init() {
         ArrayList<Weapon> martialMeleeWeapons = new ArrayList<>();
-        List<String> properties;
+        List<String> propertiesList;
 
         // Create Battleaxe
-        properties = propertiesAssembler("Versatile (1d10)");
+        propertiesList = propertiesAssembler("Versatile (1d10)");
         martialMeleeWeapons.add(build("Battleaxe", 8,
-                DamageType.SLASHING, 4, properties));
+                DamageType.SLASHING, 4, propertiesList));
         // Create Flail
-        properties = new ArrayList<>();
+        propertiesList = new ArrayList<>();
         martialMeleeWeapons.add(build("Flail", 8,
-                DamageType.BLUDGEONING, 2, properties));
+                DamageType.BLUDGEONING, 2, propertiesList));
         // Create Glaive
-        properties = propertiesAssembler("Heavy", "Reach", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Reach", "Two-handed");
         martialMeleeWeapons.add(build("Glaive", 10,
-                DamageType.SLASHING, 6, properties));
+                DamageType.SLASHING, 6, propertiesList));
         // Create Greataxe
-        properties = propertiesAssembler("Heavy", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Two-handed");
         martialMeleeWeapons.add(build("Greataxe", 12,
-                DamageType.SLASHING, 8, properties));
+                DamageType.SLASHING, 8, propertiesList));
         // Create Greatsword
-        properties = propertiesAssembler("Heavy", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Two-handed");
         martialMeleeWeapons.add(build("Greatsword",
                 6/*2d6*/, DamageType.SLASHING,
-                6, properties));
+                6, propertiesList));
         // Create Halberd
-        properties = propertiesAssembler("Heavy", "Reach", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Reach", "Two-handed");
         martialMeleeWeapons.add(build("Halberd", 10,
-                DamageType.SLASHING, 6, properties));
+                DamageType.SLASHING, 6, propertiesList));
         // Create Lance
-        properties = propertiesAssembler("Reach", "Special");
+        propertiesList = propertiesAssembler("Reach", "Special");
         martialMeleeWeapons.add(build("Lance", 12,
-                DamageType.PIERCING, 6, properties));
+                DamageType.PIERCING, 6, propertiesList));
         // Create Longsword
-        properties = propertiesAssembler("Versatile (1d10)");
+        propertiesList = propertiesAssembler("Versatile (1d10)");
         martialMeleeWeapons.add(build("Longsword", 8,
-                DamageType.SLASHING, 3, properties));
+                DamageType.SLASHING, 3, propertiesList));
         // Create Maul
-        properties = propertiesAssembler("Heavy", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Two-handed");
         martialMeleeWeapons.add(build("Maul", 6/*2d6*/,
-                DamageType.BLUDGEONING, 10, properties));
+                DamageType.BLUDGEONING, 10, propertiesList));
         // Create Morningstar
-        properties = new ArrayList<>();
+        propertiesList = new ArrayList<>();
         martialMeleeWeapons.add(build("Morningstar", 8,
-                DamageType.PIERCING, 4, properties));
+                DamageType.PIERCING, 4, propertiesList));
         // Create Pike
-        properties = propertiesAssembler("Heavy", "Reach", "Two-handed");
+        propertiesList = propertiesAssembler(heavy, "Reach", "Two-handed");
         martialMeleeWeapons.add(build("Pike", 10,
-                DamageType.PIERCING, 18, properties));
+                DamageType.PIERCING, 18, propertiesList));
         // Create Rapier
-        properties = propertiesAssembler("Finesse");
+        propertiesList = propertiesAssembler("Finesse");
         martialMeleeWeapons.add(build("Rapier", 8,
-                DamageType.PIERCING, 2, properties));
+                DamageType.PIERCING, 2, propertiesList));
         // Create Scimitar
-        properties = propertiesAssembler("Finesse", "Light");
+        propertiesList = propertiesAssembler("Finesse", "Light");
         martialMeleeWeapons.add(build("Scimitar", 6,
-                DamageType.SLASHING, 3, properties));
+                DamageType.SLASHING, 3, propertiesList));
         // Create Shortsword
-        properties = propertiesAssembler("Finesse", "Light");
+        propertiesList = propertiesAssembler("Finesse", "Light");
         martialMeleeWeapons.add(build("Shortsword", 6,
-                DamageType.PIERCING, 2, properties));
+                DamageType.PIERCING, 2, propertiesList));
         // Create Trident
-        properties = propertiesAssembler("Thrown (range 20/60)",
+        propertiesList = propertiesAssembler("Thrown (range 20/60)",
                 "Versatile (1d8)");
         martialMeleeWeapons.add(build("Trident", 6,
-                DamageType.PIERCING, 4, properties));
+                DamageType.PIERCING, 4, propertiesList));
         // Create War pick
-        properties = new ArrayList<>();
+        propertiesList = new ArrayList<>();
         martialMeleeWeapons.add(build("War pick", 8,
-                DamageType.PIERCING, 2, properties));
+                DamageType.PIERCING, 2, propertiesList));
         // Create Warhammer
-        properties = propertiesAssembler("Versarile (1d10)");
+        propertiesList = propertiesAssembler("Versarile (1d10)");
         martialMeleeWeapons.add(build("Warhammer", 8,
-                DamageType.BLUDGEONING, 2, properties));
+                DamageType.BLUDGEONING, 2, propertiesList));
         // Create Whip
-        properties = propertiesAssembler("Finesse", "Reach");
+        propertiesList = propertiesAssembler("Finesse", "Reach");
         martialMeleeWeapons.add(build("Whip", 4,
-                DamageType.SLASHING, 3, properties));
+                DamageType.SLASHING, 3, propertiesList));
         return martialMeleeWeapons;
     }
 
