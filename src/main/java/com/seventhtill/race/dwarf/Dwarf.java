@@ -1,24 +1,34 @@
 package com.seventhtill.race.dwarf;
 
 import com.seventhtill.race.Race;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // Abstract class containing base information for a dwarf
 public abstract class Dwarf implements Race {
     // Fields for traits/abilities common to every dwarf
+    private String name;
     protected Map<String, Integer> abilityScoreIncrease;
     protected ArrayList<String> abilities;
     private ArrayList<String> languages;
 
     // Constructor for a base dwarf
     public Dwarf() {
+        initName();
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
     }
 
+    @Override
+    public void initName() {
+        this.name = "DWARF";
+    }
+
     // Set up of the traits initially
-    private  void initAbilityScoreIncrease() {
+    private void initAbilityScoreIncrease() {
         this.abilityScoreIncrease = new HashMap<>();
         this.abilityScoreIncrease.put("Constitution", 2);
     }
@@ -41,16 +51,21 @@ public abstract class Dwarf implements Race {
     // Getters for the data
     public Map<String, Integer> getAbilityScoreIncrease() {
         // Imma return a deep copy of the actual map to ensure that it is safe.
-        return  new HashMap<>(this.abilityScoreIncrease);
+        return new HashMap<>(this.abilityScoreIncrease);
     }
 
     public ArrayList<String> getAbilities() {
         // Once again return a deep copy
-         return new ArrayList<>(this.abilities);
+        return new ArrayList<>(this.abilities);
     }
 
     public ArrayList<String> getLanguages() {
         // And here deep copy also
         return new ArrayList<>(this.languages);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

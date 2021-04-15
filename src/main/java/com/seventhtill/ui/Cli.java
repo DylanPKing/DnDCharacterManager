@@ -9,17 +9,23 @@ import com.seventhtill.dbManager.Queries;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.wizard.baseWizard;
 import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.weapon.*;
+import com.seventhtill.item.armour.ArmourComposite;
+import com.seventhtill.item.weapon.Weapon;
 import com.seventhtill.race.Race;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import static com.seventhtill.dbManager.Queries.*;
 
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
 public class Cli {
     public static int armourId, weaponId;
+    public static String oldName;
+    public static Race oldRace;
+    public static DnDClass oldClass;
     private Scanner scanner;
     private MainMenu mainMenu;
     private CharacterNameCreationMenu characterNameCreationMenu;
@@ -181,8 +187,7 @@ public class Cli {
         if(!(character.getCharacterClass() instanceof baseWizard)) {
             System.out.println(character.getCharacterArmour().getName());
         }
-        // There will be a call to write to db here.
-        // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
+        //call to write to db here.
         DnDCharacterDTO aDnDCharacterDTO = new DnDCharacterDTO(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterItem(), character.getCharacterWeapon(), character.getCharacterArmour(), character.getCharacterArmour().getBaseArmour(), character.getCharacterArmour().getName(), character.getCharacterArmour().isDisadvantage(), character.getCharacterArmour().getWeight(), character.getCharacterWeapon().getAttackType(), character.getCharacterWeapon().getWeight(), character.getCharacterWeapon().getName(), character.getCharacterWeapon().getProperties(), character.getCharacterWeapon().getAttackType().getDamageDie(), character.getCharacterWeapon().getAttackType().getDamageType());
         armourId = Queries.addArmour(aDnDCharacterDTO);
         weaponId = Queries.addWeapon(aDnDCharacterDTO);
@@ -191,6 +196,7 @@ public class Cli {
 
     // A method that will control the flow for editing a character
     private void characterEditControl() {
+        //List of characters
         ArrayList<DnDCharacter> characters;
         characters = retrieveDnDCharacter();
         //invoke builder for character
@@ -199,6 +205,7 @@ public class Cli {
         characterDirector.makeCharacter();
         //objects to be filled
         DnDCharacter aNewCharacter = characterDirector.getCharacter();
+        //TODO: get characters from list
         int input = 0;
         boolean done = false;
         String userInput;
@@ -225,6 +232,10 @@ public class Cli {
             }
             for (int i = 0; i < characters.size(); i++) {
                 if (userInput.equals(String.valueOf(i + 1))) {
+                    //old character params to be stored
+                    oldName = characters.get(i).getCharacterName();
+                    oldRace = characters.get(i).getCharacterRace();
+                    oldClass = characters.get(i).getCharacterClass();
                     input = editMenu(characters.get(i));
                 }
             }
@@ -235,6 +246,7 @@ public class Cli {
                     done = true;
             }
         }
+        //newChar
     }
 
     // Control for character deletion
@@ -247,10 +259,13 @@ public class Cli {
         characterDirector.makeCharacter();
         //objects to be filled
         DnDCharacter aNewCharacter = characterDirector.getCharacter();
+        //aNewCharacter.setCharacterName(characters.get(1).getCharacterName());
+        //aNewCharacter.setCharacterRace(characters.get(1).getCharacterRace());
+        //aNewCharacter.setCharacterClass(characters.get(1).getCharacterClass());
+        //System.out.print("Name: " + aNewCharacter.getCharacterName() + " Race: " + aNewCharacter.getCharacterRace() + " Class: " + aNewCharacter.getCharacterClass());
 
         String userInput;
         boolean done = false;
-        // TODO the list needs to be populated with the characters from db @chief
         while(!done) {
             System.out.println("Pick a character to delete:");
             for (int i = 0; i < characters.size(); i++) {
@@ -282,6 +297,10 @@ public class Cli {
 
     // Print a list of all characters in bd
     private void showCharactersControl() {
+        int armourId = 0;
+        int weaponId = 0;
+        ArmourComposite tempArmour;
+        Weapon tempWeapon;
         ArrayList<DnDCharacter> characters;
         characters = retrieveDnDCharacter();
         //invoke builder for character
@@ -292,12 +311,18 @@ public class Cli {
         DnDCharacter aNewCharacter = characterDirector.getCharacter();
 
         for(DnDCharacter character : characters) {
+            armourId = getCharacterArmourId(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass());
+            //weaponId = getCharacterWeaponId(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass());
+            tempArmour = getCharacterArmour(armourId);
+            tempWeapon = getCharacterWeapon(weaponId);
+            System.out.println(getCharacterWeapon(weaponId));
+
             System.out.println(character.getCharacterName() + ", " +
-                    character.getCharacterRace() + ", " +
-                    character.getCharacterClass() + ", " +
-                    character.getCharacterAttributes() + ", " +
-                    character.getCharacterWeapon() + ", " +
-                    character.getCharacterArmour());
+                    character.getCharacterRace().getName() + ", " +
+                    character.getCharacterClass().getName() + ", " +
+                    character.getCharacterAttributes()); //+ ", " +
+                    //tempArmour.getName() + ", " +
+                    //tempWeapon.getName());
         }
         System.out.println("Hit enter to return to the main menu");
         scanner.nextLine();
@@ -308,6 +333,12 @@ public class Cli {
         boolean done = false;
         int input = 0;
         while (!done) {
+            System.out.println("now editing:");
+            System.out.println(character.getCharacterName());
+            System.out.println(character.getCharacterRace());
+            System.out.println(character.getCharacterClass());
+            System.out.println(character.getCharacterWeapon());
+            System.out.println(character.getCharacterArmour());
             System.out.println("Pick a trait to edit:\n" +
                     "1) Name.\n" +
                     "2) Race.\n" +
@@ -319,9 +350,15 @@ public class Cli {
             switch (userInput) {
                 case "1":
                     characterNameCreationMenu.createCharacterName(scanner);
+                    updateDnDCharacterName(character.getCharacterName(), oldName, oldRace, oldClass);
+                    System.out.println(character.getCharacterName());
+                    System.out.println("Hi I got here");
                     break;
                 case "2":
                     input  = characterRaceCreationMenu.createCharacterRace(scanner);
+                    updateDnDCharacterRace(character.getCharacterRace(), oldName, oldRace, oldClass);
+                    System.out.println("I got here race bro");
+                    System.out.println("New Race: " + character.getCharacterRace() + "Old Race: " + oldRace);
                     break;
                 case "3":
                     input  = characterClassCreationMenu.createCharacterClass(scanner);
@@ -346,7 +383,8 @@ public class Cli {
             }
         }
         //update db with new character
-        updateDnDCharacter(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterWeapon().getId(), character.getCharacterArmour().getId(), character.getCharacterName());
+        //System.out.printf("Name: %s Race: %s Class: %s Weapon Id: %d Armour Id: %d Old Name: %s Old Race: %s Old Class: %s" , character.getCharacterName(),character.getCharacterRace(), character.getCharacterClass(),character.getCharacterWeapon().getId(), character.getCharacterArmour().getId(),oldName,oldClass, oldRace );
+        //updateDnDCharacter(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterWeapon().getId(), character.getCharacterArmour().getId(), oldName, oldClass, oldRace);
         // If here then the attribute was changed successfully.
         return 1;
     }

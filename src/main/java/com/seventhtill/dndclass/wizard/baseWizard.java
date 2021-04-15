@@ -2,7 +2,6 @@ package com.seventhtill.dndclass.wizard;
 
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.HitDice;
-
 import com.seventhtill.item.weapon.SimpleWeapon;
 import com.seventhtill.magic.Magical;
 

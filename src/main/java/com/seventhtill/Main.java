@@ -4,10 +4,6 @@ import com.seventhtill.ui.BuildCli;
 import com.seventhtill.ui.Cli;
 import com.seventhtill.ui.CommandInvoker;
 
-import java.util.List;
-
-import static com.seventhtill.dbManager.Connect.connect;
-
 public class Main {
     public static void main(String[] args) {
 //        AbstractFactoryDndClass classFactory = FactoryProducerClass.getFactory("cleric");

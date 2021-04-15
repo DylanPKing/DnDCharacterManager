@@ -121,5 +121,4 @@ public abstract class baseCleric implements DnDClass, Magical {
     public ArrayList<String> getSpells() {
         return spells;
     }
-
 }

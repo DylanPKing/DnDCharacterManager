@@ -7,7 +7,6 @@ public interface Armour extends Item {
     int getWeight();
     boolean isDisadvantage();
     String getName();
-    int getId();
 
     default int getArmourClassModifier(int dexModifier) {
         return getBaseArmour() + dexModifier;

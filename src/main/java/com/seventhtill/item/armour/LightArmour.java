@@ -1,7 +1,6 @@
 package com.seventhtill.item.armour;
 
 public class LightArmour implements Armour {
-    private int id;
     private int baseArmour;
     private String name;
     private boolean disadvantage;
@@ -12,10 +11,6 @@ public class LightArmour implements Armour {
         this.name = name;
         this.disadvantage = disadvantage;
         this.weight = weight;
-    }
-
-    public int getId() {
-        return id;
     }
 
     @Override

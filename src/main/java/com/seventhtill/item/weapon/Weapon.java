@@ -1,13 +1,11 @@
 package com.seventhtill.item.weapon;
 
-import com.seventhtill.dbManager.DnDCharacterDTO;
 import com.seventhtill.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Weapon implements Item {
-    private int id;
     protected WeaponAttackType attackType;
     private int weight;
     private String name;
@@ -18,10 +16,6 @@ public abstract class Weapon implements Item {
         this.weight = weight;
         this.name = name;
         this.properties = properties;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -49,4 +43,11 @@ public abstract class Weapon implements Item {
         this.weight = weight;
     }
 
+    public void setProperties(List<String> properties) {
+        this.properties = properties;
+    }
+
+    public void setAttackType(WeaponAttackType attackType) {
+        this.attackType = attackType;
+    }
 }

@@ -10,15 +10,22 @@ import java.util.Map;
 // The abstract class for all elves
 public abstract class Elf implements Race, Magical {
     // Fields for traits/abilities common to every elf
+    private String name;
     protected Map<String, Integer> abilityScoreIncrease;
     protected ArrayList<String> abilities;
     protected ArrayList<String> languages;
 
     // Constructor
     public Elf() {
+        initName();
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "ELF";
     }
 
     // Set up of the traits initially
@@ -55,5 +62,10 @@ public abstract class Elf implements Race, Magical {
     public ArrayList<String> getLanguages() {
         // And here deep copy also
         return new ArrayList<>(this.languages);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
