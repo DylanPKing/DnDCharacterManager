@@ -11,4 +11,5 @@ public interface Armour extends Item {
     default int getArmourClassModifier(int dexModifier) {
         return getBaseArmour() + dexModifier;
     }
+
 }

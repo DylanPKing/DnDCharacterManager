@@ -4,22 +4,31 @@ import com.seventhtill.characterSheet.CharacterBuilder;
 import com.seventhtill.characterSheet.CharacterDirector;
 import com.seventhtill.characterSheet.CharacterSheet;
 import com.seventhtill.characterSheet.DnDCharacter;
+import com.seventhtill.dbManager.DnDCharacterDTO;
+import com.seventhtill.dbManager.Queries;
 import com.seventhtill.dndclass.DnDClass;
 import com.seventhtill.dndclass.wizard.baseWizard;
 import com.seventhtill.interceptor.CharacterContext;
 import com.seventhtill.interceptor.CharacterCreateInterceptor;
 import com.seventhtill.interceptor.Dispatcher;
 import com.seventhtill.item.armour.Armour;
-import com.seventhtill.item.weapon.*;
+import com.seventhtill.item.armour.ArmourComposite;
+import com.seventhtill.item.weapon.Weapon;
 import com.seventhtill.race.Race;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.seventhtill.dbManager.Queries.*;
+
 // Class that will be responsible for the Command Line Interface
 // NOTE this is the request class for the command pattern
 public class Cli {
+    private static int armourId, weaponId;
+    private static String oldName;
+    private static Race oldRace;
+    private static DnDClass oldClass;
     private Dispatcher dispatcher;
     private Scanner scanner;
     private MainMenu mainMenu;
@@ -29,6 +38,9 @@ public class Cli {
     private CharacterWeaponCreationMenu characterWeaponCreationMenu;
     private CharacterArmourCreationMenu characterArmourCreationMenu;
     private HashMap<String, Integer> characterAttributes;
+
+    //public access string variable for db update
+    private String updateCharacterName;
 
     // Constructor
     public Cli() {
@@ -56,7 +68,7 @@ public class Cli {
     }
 
     // Loop for the ui
-    public void run() {
+    void run() {
         // Methods here should return -1 for cancel, 0 for error and 1 for success
         boolean running = true;
         int input;
@@ -100,6 +112,7 @@ public class Cli {
         // This method will call multiple methods asking for the user to specify
         // things like name, race, class etc.
         String characterName = characterNameCreationMenu.createCharacterName(scanner);
+        updateCharacterName = characterName;
         while(!doneRace) {
             input = characterRaceCreationMenu.createCharacterRace(scanner);
             switch (input) {
@@ -181,28 +194,38 @@ public class Cli {
             character = invokeBuilder(characterName, characterRaceCreationMenu.characterRace, characterClassCreationMenu.characterClass,
                     this.characterAttributes, characterWeaponCreationMenu.characterWeapon, characterArmourCreationMenu.characterArmour);
         }
+        //call to write to db here.
+        DnDCharacterDTO aDnDCharacterDTO = new DnDCharacterDTO(character.getCharacterName(), character.getCharacterRace(), character.getCharacterClass(), character.getCharacterItem(), character.getCharacterWeapon(), character.getCharacterArmour(), character.getCharacterArmour().getBaseArmour(), character.getCharacterArmour().getName(), character.getCharacterArmour().isDisadvantage(), character.getCharacterArmour().getWeight(), character.getCharacterWeapon().getAttackType(), character.getCharacterWeapon().getWeight(), character.getCharacterWeapon().getName(), character.getCharacterWeapon().getProperties(), character.getCharacterWeapon().getAttackType().getDamageDie(), character.getCharacterWeapon().getAttackType().getDamageType());
+        armourId = Queries.addArmour(aDnDCharacterDTO);
+        weaponId = Queries.addWeapon(aDnDCharacterDTO);
+        Queries.addDnDCharacter(aDnDCharacterDTO, armourId, weaponId);
+
         CharacterContext contextChar = new CharacterContext(character);
         dispatcher.dispatchCharacterCreateCompleteInterceptor(contextChar);
         dispatcher.removeInterceptor(interceptor);
-
-        // There will be a call to write to db here.
-        // TODO @Chief needs to get the db going to write the character to db before returning to the main menu
     }
 
     // A method that will control the flow for editing a character
     private void characterEditControl() {
-        // TODO @chief needs to load all existing characters into a list
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
+        //List of characters
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
+        //invoke builder for character
+        CharacterBuilder newCharacter = new CharacterSheet();
+        CharacterDirector characterDirector = new CharacterDirector(newCharacter);
+        characterDirector.makeCharacter();
+        //objects to be filled
+        DnDCharacter aNewCharacter = characterDirector.getCharacter();
         int input = 0;
         boolean done = false;
         String userInput;
-        // TODO @chief load the characters list with characters from the db
 
         // The main loop for the menu
         while (!done) {
             System.out.println("Pick a character to edit:");
             for (int i = 0; i < characters.size(); i++) {
                 System.out.printf("%d) %s.\n", i + 1, characters.get(i).getCharacterName());
+                aNewCharacter.setCharacterName(characters.get(i).getCharacterName());
             }
             System.out.printf("%d) Cancel.\n", characters.size() + 1);
 
@@ -219,6 +242,10 @@ public class Cli {
             }
             for (int i = 0; i < characters.size(); i++) {
                 if (userInput.equals(String.valueOf(i + 1))) {
+                    //old character params to be stored
+                    oldName = characters.get(i).getCharacterName();
+                    oldRace = characters.get(i).getCharacterRace();
+                    oldClass = characters.get(i).getCharacterClass();
                     input = editMenu(characters.get(i));
                 }
             }
@@ -231,15 +258,16 @@ public class Cli {
                     break;
             }
         }
-        // TODO @chief the character needs to be updated in the db. Here or in the edit menu I'll let you decide on that. I'd say do it here though coz below might get messy.
+        //newChar
     }
 
     // Control for character deletion
     private void characterDeleteControl() {
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
+
         String userInput;
         boolean done = false;
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
-        // TODO the list needs to be populated with the characters from db @chief
         while(!done) {
             System.out.println("Pick a character to delete:");
             for (int i = 0; i < characters.size(); i++) {
@@ -260,7 +288,8 @@ public class Cli {
             }
             for (int i = 0; i < characters.size(); i++) {
                 if (userInput.equals(String.valueOf(i + 1))) {
-                    // TODO delete the character that is at characters.get(i) @chief
+                    String name = characters.get(i).getCharacterName();
+                    deleteDnDCharacter(name, weaponId, armourId );
                     done = true;
                     break;
                 }
@@ -270,15 +299,13 @@ public class Cli {
 
     // Print a list of all characters in bd
     private void showCharactersControl() {
-        ArrayList<DnDCharacter> characters = new ArrayList<>();
-        // TODO @chief load the list with db characters
+        ArrayList<DnDCharacter> characters;
+        characters = retrieveDnDCharacter();
+
         for(DnDCharacter character : characters) {
             System.out.println(character.getCharacterName() + ", " +
-                    character.getCharacterRace() + ", " +
-                    character.getCharacterClass() + ", " +
-                    character.getCharacterAttributes() + ", " +
-                    character.getCharacterWeapon() + ", " +
-                    character.getCharacterArmour());
+                    character.getCharacterRace().getName() + ", " +
+                    character.getCharacterClass().getName());
         }
         System.out.println("Hit enter to return to the main menu");
         scanner.nextLine();
@@ -289,25 +316,31 @@ public class Cli {
         boolean done = false;
         int input = 0;
         while (!done) {
+            System.out.println("now editing:");
+            System.out.println(character.getCharacterName());
+            System.out.println(character.getCharacterRace().getName());
+            System.out.println(character.getCharacterClass().getName());
             System.out.println("Pick a trait to edit:\n" +
                     "1) Name.\n" +
                     "2) Race.\n" +
                     "3) Class.\n" +
-                    "3) Weapon.\n" +
-                    "4) Armour.\n" +
                     "5 Cancel.\n");
             String userInput = scanner.nextLine();
             switch (userInput) {
                 case "1":
                     characterNameCreationMenu.createCharacterName(scanner);
+                    updateDnDCharacterName(character.getCharacterName(), oldName, oldRace, oldClass);
+                    System.out.println(character.getCharacterName());
                     input = 1;
-                    //TODO like here after the attribute is changed.
                     break;
                 case "2":
                     input  = characterRaceCreationMenu.createCharacterRace(scanner);
+                    updateDnDCharacterRace(character.getCharacterRace(), oldName, oldRace, oldClass);
+                    System.out.println("New Race: " + character.getCharacterRace() + "Old Race: " + oldRace);
                     break;
                 case "3":
                     input  = characterClassCreationMenu.createCharacterClass(scanner);
+                    updateDnDCharacterClass(character.getCharacterClass(), oldName, oldRace, oldClass);
                     break;
                 case "4":
                     input  = characterWeaponCreationMenu.createCharacterWeapon(character.getCharacterClass(), scanner);
@@ -329,7 +362,6 @@ public class Cli {
                     break;
             }
         }
-        // If here then the attribute was changed successfully.
         return 1;
     }
 

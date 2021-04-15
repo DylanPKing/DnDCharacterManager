@@ -6,7 +6,7 @@ import com.seventhtill.item.armour.MediumArmour;
 import java.util.ArrayList;
 
 public class MediumArmourHelper {
-    MediumArmourHelper() {
+    public MediumArmourHelper() {
 
     }
 

@@ -1,6 +1,7 @@
 package com.seventhtill.dndclass;
 
 import com.seventhtill.item.weapon.SimpleWeapon;
+
 import java.util.ArrayList;
 
 public interface DnDClass {

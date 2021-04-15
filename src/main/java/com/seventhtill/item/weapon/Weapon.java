@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Weapon implements Item {
-    private int id;
     protected WeaponAttackType attackType;
     private int weight;
     private String name;
@@ -17,10 +16,6 @@ public abstract class Weapon implements Item {
         this.weight = weight;
         this.name = name;
         this.properties = properties;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -35,11 +30,24 @@ public abstract class Weapon implements Item {
         return new ArrayList<>(properties);
     }
 
+    //added for DTO
+    public WeaponAttackType getAttackType() {
+        return attackType;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public void setProperties(List<String> properties) {
+        this.properties = properties;
+    }
+
+    public void setAttackType(WeaponAttackType attackType) {
+        this.attackType = attackType;
     }
 }

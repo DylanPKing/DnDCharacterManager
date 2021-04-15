@@ -3,6 +3,7 @@ package com.seventhtill.item.armour;
 import java.util.ArrayList;
 
 public class ArmourComposite implements Armour {
+    private int id;
 
     private ArrayList<Armour> armourCollection;
 
@@ -76,5 +77,9 @@ public class ArmourComposite implements Armour {
 
     public void remove(Armour armour) {
         armourCollection.remove(armour);
+    }
+
+    public int getId() {
+        return id;
     }
 }

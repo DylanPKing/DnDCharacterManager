@@ -4,8 +4,6 @@ import com.seventhtill.ui.BuildCli;
 import com.seventhtill.ui.Cli;
 import com.seventhtill.ui.CommandInvoker;
 
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
 //        AbstractFactoryDndClass classFactory = FactoryProducerClass.getFactory("cleric");
@@ -52,5 +50,6 @@ public class Main {
 
         // Execute the commands that were set up
         command.executeCommands();
+        //connect();
     }
 }

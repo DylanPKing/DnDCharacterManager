@@ -9,15 +9,22 @@ import java.util.Map;
 // Abstract class for all Halflings
 public abstract class Halfling implements Race {
     // Fields for traits/abilities common to every halfling
+    private String name;
     protected Map<String, Integer> abilityScoreIncrease;
     protected ArrayList<String> abilities;
     protected ArrayList<String> languages;
 
     // Constructor
-    protected Halfling() {
+    public Halfling() {
+        initName();
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "HALFLING";
     }
 
     // Setting up initial values
@@ -53,5 +60,10 @@ public abstract class Halfling implements Race {
     public ArrayList<String> getLanguages() {
         // And here deep copy also
         return new ArrayList<>(this.languages);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

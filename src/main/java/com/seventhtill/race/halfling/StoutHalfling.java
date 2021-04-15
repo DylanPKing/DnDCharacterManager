@@ -2,11 +2,18 @@ package com.seventhtill.race.halfling;
 
 // Concrete class Stout halfling that extends base halfling
 public class StoutHalfling extends Halfling {
+    private String name;
     // Constructor
     public StoutHalfling() {
         super();
+        initName();
         addAbilityScoreIncrease();
         addAbility();
+    }
+
+    @Override
+    public void initName() {
+        this.name = "STOUT HALFLING";
     }
 
     // Add stout halfling specific attributes
@@ -16,5 +23,10 @@ public class StoutHalfling extends Halfling {
 
     private void addAbility() {
         this.abilities.add("Stout Resilience");
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

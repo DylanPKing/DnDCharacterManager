@@ -4,9 +4,10 @@ import com.seventhtill.race.Race;
 import com.seventhtill.race.elf.HighElf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DnDCharacterTest {
     private DnDCharacter aNewCharacter;

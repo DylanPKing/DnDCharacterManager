@@ -11,4 +11,5 @@ public class Cleric extends baseCleric implements DnDClass, Magical {
         addSpell("Spellcasting");
         addSpell("Divine Domain");
     }
+
 }

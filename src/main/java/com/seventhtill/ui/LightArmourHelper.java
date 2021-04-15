@@ -6,7 +6,7 @@ import com.seventhtill.item.armour.LightArmour;
 import java.util.ArrayList;
 
 public class LightArmourHelper {
-    LightArmourHelper() {
+    public LightArmourHelper() {
 
     }
 

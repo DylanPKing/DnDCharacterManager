@@ -8,23 +8,31 @@ import java.util.Map;
 
 // Abstract class for human
 public abstract class Human implements Race {
+    private String name;
     // Fields for traits/abilities common to every human
     protected Map<String, Integer> abilityScoreIncrease;
     protected ArrayList<String> abilities;
     protected ArrayList<String> languages;
 
     // Constructor
-    protected Human() {
+    public Human() {
+        initName();
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
     }
 
-    protected Human(String extraLanguage) {
+    public Human(String extraLanguage) {
+        initName();
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
         addLanguage(extraLanguage);
+    }
+
+    @Override
+    public void initName() {
+        this.name = "HUMAN";
     }
 
     // Setting up base human attributes
@@ -67,5 +75,10 @@ public abstract class Human implements Race {
     public ArrayList<String> getLanguages() {
         // And here deep copy also
         return new ArrayList<>(this.languages);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

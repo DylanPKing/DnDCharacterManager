@@ -35,4 +35,5 @@ public class Shield implements Armour {
     public String getName() {
         return name;
     }
+
 }
