@@ -6,10 +6,16 @@ import java.util.ArrayList;
 public class Dispatcher {
     private ArrayList<Interceptor> interceptors;
 
-    public void registerInterceptor() {
+    public Dispatcher() {
+        this.interceptors = new ArrayList<>();
     }
 
-    public void removeInterceptor() {
+    public void registerInterceptor(Interceptor interceptor) {
+        interceptors.add(interceptor);
+    }
+
+    public void removeInterceptor(Interceptor interceptor) {
+        interceptors.remove(interceptor);
     }
 
     public void dispatchCharacterCreateInterceptor() {
