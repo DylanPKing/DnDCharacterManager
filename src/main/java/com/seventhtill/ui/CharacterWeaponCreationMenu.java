@@ -61,6 +61,9 @@ public class CharacterWeaponCreationMenu {
                     case "Shortsword":
                     case "Crossbow, hand":
                         allowedMartials.add(weapon);
+                        break;
+                    default:
+                        break;
                 }
             }
             List<Weapon> rogueWeapons = Stream.of(simpleMelee, simpleRanged, allowedMartials).flatMap(Collection::stream).collect(Collectors.toList());
@@ -78,6 +81,9 @@ public class CharacterWeaponCreationMenu {
                     case "Quarterstaff":
                     case "Crossbow, light":
                         wizardWeapons.add(weapon);
+                        break;
+                    default:
+                        break;
                 }
             }
             return displayWindow(wizardWeapons, text, scanner);

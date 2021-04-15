@@ -14,13 +14,13 @@ public abstract class Human implements Race {
     protected ArrayList<String> languages;
 
     // Constructor
-    public Human() {
+    protected Human() {
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();
     }
 
-    public Human(String extraLanguage) {
+    protected Human(String extraLanguage) {
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();

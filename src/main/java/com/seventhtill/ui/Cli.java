@@ -66,9 +66,6 @@ public class Cli {
                 case -1:
                     running = false;
                     break;
-                case 0:
-                    invalidInput();
-                    break;
                 case 1:
                     characterCreationControl();
                     break;
@@ -80,6 +77,10 @@ public class Cli {
                     break;
                 case 4:
                     showCharactersControl();
+                    break;
+                case 0:
+                default:
+                    invalidInput();
                     break;
             }
         }
@@ -102,12 +103,13 @@ public class Cli {
         while(!doneRace) {
             input = characterRaceCreationMenu.createCharacterRace(scanner);
             switch (input) {
-                case -1:
-                case 0:
-                    return;
                 case 1:
                     doneRace = true;
                     break;
+                case -1:
+                case 0:
+                default:
+                    return;
             }
             doneClass = false;
             // We can set the attributes here since they are reliant on the race
@@ -121,6 +123,8 @@ public class Cli {
                         break;
                     case 1:
                         doneClass = true;
+                        break;
+                    default:
                         break;
                 }
                 // Control to allow to go back a step
@@ -138,6 +142,8 @@ public class Cli {
                         case 1:
                             doneWeapon = true;
                             break;
+                        default:
+                            break;
                     }
                     if(!doneClass) {
                         break;
@@ -152,6 +158,8 @@ public class Cli {
                                 break;
                             case 1:
                                 doneArmour = true;
+                                break;
+                            default:
                                 break;
                         }
                         if(!doneWeapon) {
@@ -219,6 +227,8 @@ public class Cli {
                     return;
                 case 1:
                     done = true;
+                default:
+                    break;
             }
         }
         // TODO @chief the character needs to be updated in the db. Here or in the edit menu I'll let you decide on that. I'd say do it here though coz below might get messy.
@@ -290,6 +300,7 @@ public class Cli {
             switch (userInput) {
                 case "1":
                     characterNameCreationMenu.createCharacterName(scanner);
+                    input = 1;
                     //TODO like here after the attribute is changed.
                     break;
                 case "2":
@@ -313,6 +324,7 @@ public class Cli {
                     done = true;
                     break;
                 case 0:
+                default:
                     error();
                     break;
             }

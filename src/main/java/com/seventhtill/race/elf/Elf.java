@@ -15,7 +15,7 @@ public abstract class Elf implements Race, Magical {
     protected ArrayList<String> languages;
 
     // Constructor
-    public Elf() {
+    protected Elf() {
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();

@@ -14,7 +14,7 @@ public abstract class Halfling implements Race {
     protected ArrayList<String> languages;
 
     // Constructor
-    public Halfling() {
+    protected Halfling() {
         initAbilityScoreIncrease();
         initAbilities();
         initLanguages();

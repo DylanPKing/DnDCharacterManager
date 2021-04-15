@@ -25,32 +25,32 @@ public class MartialRangedWeaponHelper {
 
     public ArrayList<Weapon> init() {
         ArrayList<Weapon> martialRangedWeapons = new ArrayList<>();
-        List<String> properties;
+        List<String> propertiesList;
 
         // Create Blowgun
-        properties = propertiesAssembler("Ammunition (range 25/100)",
+        propertiesList = propertiesAssembler("Ammunition (range 25/100)",
                 "Loading");
         martialRangedWeapons.add(build("Blowgun", 1,
-                DamageType.PIERCING, 1, properties));
+                DamageType.PIERCING, 1, propertiesList));
         // Create Crossbow, hand
-        properties = propertiesAssembler("Ammunition (range 30/120)", "Light",
+        propertiesList = propertiesAssembler("Ammunition (range 30/120)", "Light",
                 "Loading");
         martialRangedWeapons.add(build("Crossbow, hand",
-                6, DamageType.PIERCING, 3, properties));
+                6, DamageType.PIERCING, 3, propertiesList));
         // Create Crossbow, heavy
-        properties = propertiesAssembler("Ammunition (range 100/400)",
+        propertiesList = propertiesAssembler("Ammunition (range 100/400)",
                 "Heavy", "Loading", "Two-handed");
         martialRangedWeapons.add(build("Crossbow, heavy",
-                10, DamageType.PIERCING, 18, properties));
+                10, DamageType.PIERCING, 18, propertiesList));
         // Create Longbow
-        properties = propertiesAssembler("Ammunition (range 150/600)",
+        propertiesList = propertiesAssembler("Ammunition (range 150/600)",
                 "Heavy", "Two-handed");
         martialRangedWeapons.add(build("Longbow", 8,
-                DamageType.PIERCING, 2, properties));
+                DamageType.PIERCING, 2, propertiesList));
         // Create Net
-        properties = propertiesAssembler("Special", "Thrown (range 5/15)");
+        propertiesList = propertiesAssembler("Special", "Thrown (range 5/15)");
         martialRangedWeapons.add(build("Net", 0,
-                null, 3, properties));
+                null, 3, propertiesList));
         return  martialRangedWeapons;
     }
 

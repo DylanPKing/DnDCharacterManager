@@ -80,6 +80,10 @@ public class CharacterArmourCreationMenu {
                 characterArmour = armourList.get(i);
             }
         }
+        return checkShield(scanner, userInput, dndClass);
+    }
+
+    private int checkShield(Scanner scanner, String userInput, DnDClass dndClass) {
         // Check for shield
         while(true){
             if(dndClass instanceof baseCleric) {
@@ -127,7 +131,6 @@ public class CharacterArmourCreationMenu {
         }
         return 1;
     }
-
     // Custom error message
     private void error() {
         System.out.print("This is not a valid input, try again...\n");
